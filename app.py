@@ -15,8 +15,24 @@ DBSession = sessionmaker(bind = engine)
 session = DBSession()
 
 @app.route("/")
+@app.route("/catalog")
 def showHome():
     return 'Home page'
+
+
+@app.route("/catalog/new")
+def addCategory():
+    return 'Add a new category'
+
+
+@app.route("/catalog/<categoryName>/edit")
+def editCategory(categoryName):
+    return 'Edit {}'.format(categoryName)
+
+
+@app.route("/catalog/<categoryName>/delete")
+def deleteCategory(categoryName):
+    return 'Delete {}'.format(categoryName)
 
 
 if __name__ == '__main__':
