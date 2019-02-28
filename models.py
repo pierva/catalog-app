@@ -47,6 +47,19 @@ class Category(Base):
     user_id = Column(Integer, ForeignKey('user.id'))
     user = relationship(User)
 
+
+class Item(Base):
+    __tablename__ = 'item'
+    id = Column(Integer, primary_key=True)
+    name = Column(String(50), nullable=False)
+    picture = Column(String, nullable=True)
+    user_id = Column(Integer, ForeignKey('user.id'))
+    user = relationship(User)
+    category_id = Column(Integer, ForeignKey('category.id'))
+    category_name = Column(Integer, ForeignKey('category.name'))
+    relationship(Category)
+
+
 engine = create_engine('sqlite:///catalog.db')
 
 Base.metadata.create_all(engine)
