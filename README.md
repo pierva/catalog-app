@@ -13,32 +13,32 @@ ADD CATEGORY ['POST'] => Add a category in the catalog
 
 EDIT CATEGORY ['PUT'] => Edit a category in the catalog
 
-`/catalog/edit `
+`/catalog/<categoryName>/edit `
 
 DELETE CATEGORY ['DELETE'] => Delete the category in the catalog
 
-`/catalog/edit`
+`/catalog/<categoryName>/delete`
 
 CATEGORY => Shows the items for that specific category
 
-`/catalog/<str:category-name>/`
-`/catalog/<str:category-name>/items`
+`/catalog/<categoryName>/`
+`/catalog/<categoryName>/items`
 
 ITEM ['GET']=> Get item details
 
-`/catalog/<str:category-name>/<str:item-name>`
+`/catalog/<categoryName>/<itemName>`
 
 ITEM ['POST'] => Add a new item
 
-`/catalog/<str:category-name>/new`
+`/catalog/<categoryName>/new`
 
 ITEM ['PUT'] => Edit an item
 
-`/catalog/<str:category-name>/<str:item-name>/edit`
+`/catalog/<categoryName>/<itemName>/edit`
 
 ITEM ['PUT'] => Delete an item
 
-`/catalog/<str:category-name>/<str:item-name>/delete`
+`/catalog/<categoryName>/<itemName>/delete`
 
 
 ### API ENDPOINTS
@@ -53,9 +53,9 @@ Get the list of available categories
 
 Get items of a specific category
 
-`/catalog/api/v1/<str:category-name>/items/JSON` <br>
+`/catalog/api/v1/<categoryName>/items/JSON` <br>
 `/catalog/api/v1/<int:category-id>/items/JSON`
 
 Get item description
-`/catalog/api/v1/<str:category-name>/<str:item-name>/description/JSON` <br>
+`/catalog/api/v1/<categoryName>/<itemName>/description/JSON` <br>
 `/catalog/api/v1/<int:category-id>/<int:item-id>/description/JSON`
