@@ -35,6 +35,32 @@ def deleteCategory(categoryName):
     return 'Delete {}'.format(categoryName)
 
 
+@app.route("/catalog/<categoryName>")
+@app.route("/catalog/<categoryName>/items")
+def getCategoryItems(categoryName):
+    return 'All items for {}'.format(categoryName)
+
+
+@app.route("/catalog/<categoryName>/new")
+def addCategoryItem(categoryName):
+    return 'Add a new item in {}'.format(categoryName)
+
+
+@app.route("/catalog/<categoryName>/<itemName>")
+def getItem(categoryName, itemName):
+    return 'Details for {} in {}'.format(itemName, categoryName)
+
+
+@app.route("/catalog/<categoryName>/<itemName>/edit")
+def editCategoryItem(categoryName, itemName):
+    return 'Edit {} in {}'.format(itemName, categoryName)
+
+
+@app.route("/catalog/<categoryName>/<itemName>/delete")
+def deleteCategoryItem(categoryName, itemName):
+    return 'Delete {} in {}'.format(itemName, categoryName)
+
+
 if __name__ == '__main__':
     app.secret_key = os.urandom(24)
     app.debug = True
