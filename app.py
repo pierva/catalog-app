@@ -14,15 +14,43 @@ Base.metadata.bind = engine
 DBSession = sessionmaker(bind = engine)
 session = DBSession()
 
+@app.route('/login')
+def showLogin():
+    return 'Login page'
+
+@app.route('/disconnect')
+def disconnect():
+    return 'Logout page'
+
 @app.route("/")
 @app.route("/catalog")
 def showHome():
-    return 'Home page'
+    return render_template('home.html')
 
 
-@app.route("/catalog/new")
-def addCategory():
-    return 'Add a new category'
+@app.route("/catalog/new", methods=['GET', 'POST'])
+def newCategory():
+    # TODO: Come back here to redirect in case the user is not logged in
+    # if 'username' not in login_session:
+    #     return redirect('/login')
+    if request.method == 'GET':
+        return render_template('new_category.html')
+    elif request.method == 'POST':
+        try:
+            newCategory = Category(name = request.form['name'])
+            session.add(newCategory)
+            session.commit()
+            flash({
+                "message": "Category successfully added!",
+                "role": "success"
+                 })
+            return redirect(url_for('showHome'))
+        except exc.SQLAlchemyError as e:
+            flash({
+                "message": "Something went wrong while processing your request.",
+                "role": "failure"
+                 })
+            return redirect('/')
 
 
 @app.route("/catalog/<categoryName>/edit")
