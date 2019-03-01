@@ -6,8 +6,26 @@
     {% include 'partials/style_links.html'%}
   </head>
   <body>
+    {% include 'partials/navigation.html'%}
     {% include 'partials/flash.html'%}
 
+    <div class="container-fluid">
+      <div class="row mt-5">
+        <div class="col-md-5">
+          <fieldset class="mb-3">
+            <legend>Categories List</legend>
+            <div class="scrollable">
+              {% for category in categories %}
+              <div class="categories-container">
+                <p>{{category.name}}<p>
+                </div>
+                {% endfor %}
+              </div>
+            </fieldset>
+          </div>
+          <div class="col-md-7 mb-3 items-container"></div>
+        </div>
+    </div>
 
     {% include 'partials/libraries.html'%}
   </body>
