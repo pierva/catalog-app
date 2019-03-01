@@ -10,10 +10,10 @@
 
   <div class="collapse navbar-collapse" id="navbarText">
     <ul class="navbar-nav ml-auto">
-      {% if user %}
       <li class="nav-item">
-        <a class="nav-link" href="#">New Category</a>
+        <a class="nav-link" href="{{url_for('newCategory')}}">New Category</a>
       </li>
+      {% if user %}
       <li class="nav-item">
         <a class="nav-link" href="{{url_for('disconnect')}}">Logout</a>
       </li>
