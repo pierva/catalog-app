@@ -1,0 +1,28 @@
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark
+  fixed-top top-bar justify-content-between">
+
+  <a href="#" class="navbar-brand">Catalog App</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse"
+    data-target="#navbarText" aria-controls="navbarText"
+    aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarText">
+    <ul class="navbar-nav ml-auto">
+      {% if user %}
+      <li class="nav-item">
+        <a class="nav-link" href="#">New Category</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{url_for('disconnect')}}">Logout</a>
+      </li>
+      {% else %}
+      <li class="nav-item">
+        <a class="nav-link" href="{{url_for('showLogin')}}">Login or Sign Up</a>
+      </li>
+      {% endif %}
+    </ul>
+  </div>
+
+</nav>
