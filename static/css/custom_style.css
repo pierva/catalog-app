@@ -1,3 +1,16 @@
+fieldset{
+  border: 1px solid;
+  padding: 7px;
+  border-radius: 5px;
+  height: 600px;
+  padding-top: 10px;
+}
+
+legend{
+  width: auto;
+  font-size: 1rem;
+}
+
 .top-bar{
   -webkit-box-shadow: 0px 3px 10px 0px rgba(0,0,0,0.75);
   -moz-box-shadow: 0px 3px 10px 0px rgba(0,0,0,0.75);
@@ -16,16 +29,61 @@
 .categories-container{
   background: #616369;
   border: 1px solid #989898;
-  border-radius: 5px;
-  height: 70px;
-  padding: 10px;
-  font-size: 1.1rem;
-  color: white;
+  border-radius: 3px;
+  padding: 5px;
+  font-size: 1.2rem;
+  color: rgb(189, 189, 189);
   -webkit-box-shadow: 0px 0px 15px -2px rgba(255,255,255,1);
   -moz-box-shadow: 0px 0px 15px -2px rgba(255,255,255,1);
   box-shadow: 0px 0px 15px -2px rgba(255,255,255,1);
-  margin-bottom: 15px;
   cursor: pointer;
   transition: all 0.3s ease-in-out;
   text-align: center;
+}
+
+.metal {
+  position: relative;
+  margin: 0px auto;
+  outline: none;
+  font-weight: normal;
+  text-align: center;
+  color: hsla(0,0%,20%,1);
+  text-shadow: hsla(0,0%,40%,.5) 0 -1px 0, hsla(0,0%,100%,.6) 0 2px 1px;
+  box-shadow: -webkit-box-shadow: inset 0px 0px 3px 0px rgba(0,0,0,0.75);
+              -moz-box-shadow: inset 0px 0px 3px 0px rgba(0,0,0,0.75);
+              box-shadow: inset 0px 0px 3px 0px rgba(0,0,0,0.75);
+  transition: all .3s;
+  cursor: pointer;
+  font-size: 1.3rem;
+  border-radius: .25rem;
+  line-height: 1.5rem;
+  vertical-align: middle;
+  padding: .375rem .75rem
+}
+
+.metal:active {
+  color: hsl(210, 100%, 40%);
+  text-shadow: hsla(210,100%,20%,.3) 0 -1px 0, hsl(210,100%,85%) 0 2px 1px, hsla(200,100%,80%,1) 0 0 5px, hsla(210,100%,50%,.6) 0 0 20px;
+  box-shadow:
+    inset hsla(210,100%,30%,  1) 0  0px 0px 1px, /* border */
+    inset hsla(210,100%,15%, .4) 0 -1px 2px 1px, /* soft SD */
+    inset hsla(210,100%,20%,.25) 0 -1px 0px 1px, /* bottom SD */
+    inset hsla(210,100%,100%,.7) 0  0px 0px 1px, /* top HL */
+
+    hsla(210,100%,75%, .8) 0  0px 3px 1px, /* outer SD */
+    hsla(210,50%,40%, .25) 0 -2px 3px 1px, /* outer SD */
+    hsla(210,80%,95%,   1) 0  2px 3px 1px; /* outer HL */
+}
+
+.metal:hover {
+  background-color: rgb(215, 220, 230);
+}
+
+.edit, .delete {
+  display: none;
+  transition: all 1s;
+}
+
+.controls:hover > .edit, .controls:hover > .delete {
+  display: block;
 }
