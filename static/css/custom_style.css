@@ -52,7 +52,7 @@ legend{
   box-shadow: -webkit-box-shadow: inset 0px 0px 3px 0px rgba(0,0,0,0.75);
               -moz-box-shadow: inset 0px 0px 3px 0px rgba(0,0,0,0.75);
               box-shadow: inset 0px 0px 3px 0px rgba(0,0,0,0.75);
-  transition: all .3s;
+  transition: all 0.3s;
   cursor: pointer;
   font-size: 1.3rem;
   border-radius: .25rem;
@@ -80,10 +80,20 @@ legend{
 }
 
 .edit, .delete {
-  display: none;
-  transition: all 1s;
+  opacity: 0;
+  width: 0;
+  transform: translate(210%, 0%);
 }
 
 .controls:hover > .edit, .controls:hover > .delete {
-  display: block;
+  transition: 0.3s;
+  transition-timing-function: ease-out;
+  transform: translateY(0);
+  opacity: 1;
+  width: auto;
+}
+
+.controls .edit, controls .delete{
+  transition-timing-function: ease-in;
+  transition: 0.2s;
 }
