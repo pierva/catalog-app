@@ -23,23 +23,23 @@
                 </div>
 
                 <div class="float-left delete">
-                  <form action="#" method="post">
+                  <a href="{{url_for('deleteCategory', categoryName=category.name)}}">
                     <div class="">
                       <button type="submit" name="button" class="btn form-control btn-outline-danger">
                         <span class="fas fa-trash-alt"></span>
                       </button>
                     </div>
-                  </form>
+                  </a>
                 </div>
 
                 <div class="float-left edit">
-                  <form action="#" method="post">
+                  <a href="{{url_for('editCategory', categoryName=category.name)}}">
                     <div class="">
                       <button type="submit" name="button" class="btn form-control btn-outline-warning">
                         <span class="fas fa-edit"></span>
                       </button>
                     </div>
-                  </form>
+                  </a>
                 </div>
               </div>
               {% endfor %}
