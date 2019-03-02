@@ -71,7 +71,7 @@ def newCategory():
 def editCategory(categoryName):
     try:
         session = DBSession()
-        category = session.query(Category).filter_by(name=categorName).first()
+        category = session.query(Category).filter_by(name=categoryName).first()
         if request.method == 'POST':
 
             flash({
