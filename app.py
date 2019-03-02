@@ -73,7 +73,6 @@ def editCategory(categoryName):
         session = DBSession()
         category = session.query(Category).filter_by(name=categoryName).first()
         if request.method == 'POST':
-
             flash({
                 "message": "Category successfully updated!",
                 "role": "success"
@@ -81,7 +80,7 @@ def editCategory(categoryName):
             return redirect(url_for('showHome'))
         elif request.method == 'GET':
             # consider returning a popup here and then handle it with ajax
-            return render_template('edit_category.html', category)
+            return render_template('edit_category.html', category=category)
     except exc.SQLAlchemyError as e:
         flash({
             "message":
@@ -92,13 +91,14 @@ def editCategory(categoryName):
         return redirect('/')
 
 
-@app.route("/catalog/<categoryName>/delete")
+@app.route("/catalog/<categoryName>/delete", methods=['GET', 'POST'])
 def deleteCategory(categoryName):
     try:
         session = DBSession()
-        category = session.query(Category).filter_by(name=categorName).first()
+        category = session.query(Category).filter_by(name=categoryName).first()
         # consider returning a popup here and then handly with ajax
-        return render_template('edit_category.html', category)
+        if request.method == 'GET':
+            return render_template('delete_category.html', category=category)
     except exc.SQLAlchemyError as e:
         flash({
             "message":
