@@ -25,7 +25,18 @@ def disconnect():
 @app.route("/")
 @app.route("/catalog")
 def showHome():
-    return render_template('home.html')
+    # TODO: getUserInfo from login_session and send the user info to the template
+    try:
+        session = DBSession()
+        categories = session.query(Category).all()
+        return render_template('home.html', categories=categories, user=None)
+
+    except exc.SQLAlchemyError as e:
+        flash({
+            "message": "Error while communicating with the db.\n\n" + e.message,
+            "role": "failure"
+             })
+        return redirect('/')
 
 
 @app.route("/catalog/new", methods=['GET', 'POST'])
@@ -37,6 +48,7 @@ def newCategory():
         return render_template('new_category.html')
     elif request.method == 'POST':
         try:
+            session = DBSession()
             newCategory = Category(name = request.form['name'])
             session.add(newCategory)
             session.commit()
@@ -47,20 +59,53 @@ def newCategory():
             return redirect(url_for('showHome'))
         except exc.SQLAlchemyError as e:
             flash({
-                "message": "Something went wrong while processing your request.",
+                "message":
+                    "Something went wrong while processing your request.\n\n" +
+                    e.message,
                 "role": "failure"
                  })
             return redirect('/')
 
 
-@app.route("/catalog/<categoryName>/edit")
+@app.route("/catalog/<categoryName>/edit", methods=['GET','POST'])
 def editCategory(categoryName):
-    return 'Edit {}'.format(categoryName)
+    try:
+        session = DBSession()
+        category = session.query(Category).filter_by(name=categorName).first()
+        if request.method == 'POST':
+
+            flash({
+                "message": "Category successfully updated!",
+                "role": "success"
+                 })
+            return redirect(url_for('showHome'))
+        elif request.method == 'GET':
+            # consider returning a popup here and then handle it with ajax
+            return render_template('edit_category.html', category)
+    except exc.SQLAlchemyError as e:
+        flash({
+            "message":
+                "Something went wrong while processing your request.\n\n" +
+                e.message,
+            "role": "failure"
+             })
+        return redirect('/')
 
 
 @app.route("/catalog/<categoryName>/delete")
 def deleteCategory(categoryName):
-    return 'Delete {}'.format(categoryName)
+    try:
+        session = DBSession()
+        category = session.query(Category).filter_by(name=categorName).first()
+        # consider returning a popup here and then handly with ajax
+        return render_template('edit_category.html', category)
+    except exc.SQLAlchemyError as e:
+        flash({
+            "message":
+                "Something went wrong while processing your request.\n\n" +
+                e.message,
+            "role": "failure"
+             })
 
 
 @app.route("/catalog/<categoryName>")
