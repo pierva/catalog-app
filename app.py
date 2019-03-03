@@ -98,7 +98,14 @@ def deleteCategory(categoryName):
         category = session.query(Category).filter_by(name=categoryName).first()
         # consider returning a popup here and then handly with ajax
         if request.method == 'GET':
-            return render_template('delete_category.html', category=category)
+            return jsonify(category.serialize_category())
+        elif request.method == 'POST':
+            session.delete(category)
+            session.commit()
+            flash({
+                "message": "{} category deleted.".format(category.name),
+                "role": "success"
+            })
     except exc.SQLAlchemyError as e:
         flash({
             "message":
