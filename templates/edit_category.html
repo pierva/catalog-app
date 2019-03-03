@@ -1,0 +1,19 @@
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Edit {{category.name}}tegory</title>
+        {% include 'partials/style_links.html'%}
+  </head>
+  <body>
+    {% include 'partials/navigation.html'%}
+    {% include 'partials/flash.html'%}
+    <h1>Add a New Category</h1>
+    <form class="" action="" method="POST">
+      <label for="name">New Category Name</label>
+      <input type="text" name="name" value="{{category.name}}">
+      <input type="submit" value="Edit Category">
+    </form>
+
+        {% include 'partials/libraries.html'%}
+  </body>
+</html>
