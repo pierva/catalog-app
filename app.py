@@ -163,13 +163,21 @@ def getItem(categoryName, itemName):
     return 'Details for {} in {}'.format(itemName, categoryName)
 
 
-@app.route("/catalog/<categoryName>/<itemName>/edit")
+@app.route("/catalog/<categoryName>/<itemName>/edit", methods=['GET', 'POST'])
 def editCategoryItem(categoryName, itemName):
     try:
         session = DBSession()
         item = session.query(Item).filter(Item.name == itemName,
             Item.category_name == categoryName).one()
-        return render_template('edit_item.html', item=item)
+        if request.method == 'GET':
+            return render_template('edit_item.html', item=item)
+        elif request.method == 'POST':
+            item.name = request.form['name']
+            item.picture = request.form['picture']
+            item.description = request.form['description']
+            session.add(item)
+            session.commit()
+            return redirect(url_for('showHome'))
     except exc.SQLAlchemyError as e:
         flash({
             "message":
