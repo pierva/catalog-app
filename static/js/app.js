@@ -21,7 +21,7 @@ $(function(){
     $.getJSON(url, function(category){
       $('#deleteModal').find('input[name="name"]').val(category.name);
       $('#deleteModal').find('form').attr('action', url);
-      $('.delete-message').text("Are you sure you want to delete " +
+      $('.delete-message').text("Are you sure you want to delete the " +
         category.name + " cateogry?" );
     });
   });
@@ -34,7 +34,7 @@ $(function(){
     $("#deleteModalLabel").text("Delete Item");
     var url = $SCRIPT_ROOT + '/catalog/' + categoryName + '/' + name +'/delete';
     $.getJSON(url, function(item){
-      $("#deleteModalLabel").text("Delete Category")
+      $("#deleteModalLabel").text("Delete Item")
       $('#deleteModal').find('input[name="name"]').val(item.name);
       $('#deleteModal').find('form').attr('action', url);
       $('.delete-message').text("Are you sure you want to delete " +

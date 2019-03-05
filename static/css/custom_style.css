@@ -18,15 +18,15 @@ legend{
 }
 
 .item-field{
-  -webkit-box-shadow: 3px 3px 7px 1px rgba(0,34,255,1);
-   -moz-box-shadow: 3px 3px 7px 1px rgba(0,34,255,1);
-   box-shadow: 3px 3px 7px 1px rgba(0,34,255,1);
+  -webkit-box-shadow: 2px 2px 5px 1px rgba(0,34,255,0.8);
+   -moz-box-shadow: 2px 2px 5px 1px rgba(0,34,255,0.8);
+   box-shadow: 2px 2px 5px 1px rgba(0,34,255,0.8);
 }
 
 .category-field{
-  -webkit-box-shadow: -3px 3px 7px 1px rgba(0,34,255,1);
-  -moz-box-shadow: -3px 3px 7px 1px rgba(0,34,255,1);
-  box-shadow: -3px 3px 7px 1px rgba(0,34,255,1);
+  -webkit-box-shadow: -2px 2px 5px 1px rgba(0,34,255,0.8);
+  -moz-box-shadow: -2px 2px 5px 1px rgba(0,34,255,0.8);
+  box-shadow: -2px 2px 5px 1px rgba(0,34,255,0.8);
 }
 
 .flash-container{
