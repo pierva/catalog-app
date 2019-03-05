@@ -103,6 +103,8 @@ def deleteCategory(id):
         if request.method == 'GET':
             return jsonify(category.serialize_category)
         elif request.method == 'POST':
+            items = session.query(Item).filter_by(category_id=id)
+            items.delete(synchronize_session='evaluate')
             session.delete(category)
             session.commit()
             flash({
