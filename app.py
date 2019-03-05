@@ -124,9 +124,34 @@ def getCategoryItems(categoryName):
     return 'All items for {}'.format(categoryName)
 
 
-@app.route("/catalog/<categoryName>/new")
+@app.route("/catalog/<categoryName>/new", methods=['GET', 'POST'])
 def addCategoryItem(categoryName):
-    return 'Add a new item in {}'.format(categoryName)
+    try:
+        session = DBSession()
+        category = session.query(Category).filter_by(name = categoryName).one()
+        if request.method == 'GET':
+            return render_template('new_item.html', category=category)
+        elif request.method == 'POST':
+            newItem = Item(
+                name = request.form['name'],
+                picture = request.form['picture'],
+                description = request.form['description']
+            )
+            session.add(newItem)
+            session.commit()
+            flash({
+                "message": "New item successfully created.",
+                "role": "success"
+            })
+            return redirect(url_for('showHome'))
+    except exc.SQLAlchemyError as e:
+        flash({
+            "message":
+                "No category found. Please add a category before" +
+                " adding items.",
+            "role": "failure"
+            })
+        return redirect(url_for('showHome'))
 
 
 @app.route("/catalog/<categoryName>/<itemName>")
