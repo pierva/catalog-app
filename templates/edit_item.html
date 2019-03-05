@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+<div class="container mt-5">
+  <h2 class="page-title">Edit {{item.name}} in {{ item.category_name }}</h2>
+  <form class="mt-5" action="{{url_for('editCategoryItem',
+      categoryName=item.category_name, itemName=item.name)}}" method="POST">
+    <div class="form-group">
+      <label for="name">Item Name</label>
+      <input type="text" class="form-control" name="name"
+        placeholder="Item Name" value="{{item.name}}">
+    </div>
+    <div class="form-group">
+      <label for="exampleInputEmail1">Picture Link</label>
+      <input type="text" class="form-control" name="picture" value="{{item.picture}}"
+        aria-describedby="pictureHelp" placeholder="Picture link">
+      <small id="pictureHelp" class="form-text text-muted">
+          Insert a link to a cool picture of this item.
+      </small>
+    </div>
+    <div class="form-group">
+      <label for="description">Description</label>
+      <textarea class="form-control" name="description" rows="5">{{item.description}}</textarea>
+    </div>
+
+    <div class="text-right">
+      <button type="submit" class="btn btn-warning">
+        Edit <span class="fas fa-edit"></span>
+      </button>
+    </div>
+  </form>
+
+</div>
+
+{% endblock %}

@@ -2,7 +2,7 @@ import os
 import requests
 from flask import (Flask, request, url_for, flash, render_template,
     redirect, jsonify, abort)
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, and_
 from sqlalchemy.orm import sessionmaker
 from models import Base, User, Category, Item
 from sqlalchemy import exc
@@ -165,7 +165,18 @@ def getItem(categoryName, itemName):
 
 @app.route("/catalog/<categoryName>/<itemName>/edit")
 def editCategoryItem(categoryName, itemName):
-    return 'Edit {} in {}'.format(itemName, categoryName)
+    try:
+        session = DBSession()
+        item = session.query(Item).filter(Item.name == itemName,
+            Item.category_name == categoryName).one()
+        return render_template('edit_item.html', item=item)
+    except exc.SQLAlchemyError as e:
+        flash({
+            "message":
+                "No item was found. Please retry.",
+            "role": "failure"
+            })
+        return redirect(url_for('showHome'))
 
 
 @app.route("/catalog/<categoryName>/<itemName>/delete")
