@@ -5,6 +5,10 @@ $(function(){
     $.getJSON(url, function(category){
       $('#editModal').find('input[name="name"]').val(category.name);
       $('#editModal').find('form').attr('action', url);
-    })
-  })
-})
+    });
+  });
+});
+
+$(".alert").fadeTo(2000, 500).slideUp(500, function(){
+    $(this).slideUp(500);
+});
