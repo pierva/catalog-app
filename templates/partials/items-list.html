@@ -1,0 +1,19 @@
+{% for item in items %}
+<li class="list-group-item">
+  {{item.name}}
+  <span class="description">
+      {{item.category_name}}
+  </span>
+  <div data-item-name="{{item.name}}">
+    <a href="{{url_for('editCategoryItem',
+      categoryName = item.category_name, itemName = item.name)}}"
+      class="btn btn-sm btn-outline-warning">
+      <span class="fas fa-edit"></span>
+    </a>
+    <button type="submit" name="button"  data-toggle='modal'
+      data-target='#deleteModal' class="btn btn-sm btn-outline-danger">
+      <span class="fas fa-trash-alt"></span>
+    </button>
+  </div>
+</li>
+{% endfor %}

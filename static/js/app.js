@@ -42,3 +42,24 @@ $(function(){
     });
   });
 });
+
+$(function(){
+  $('.categories-container .metal').on('click', function(){
+    var category = $(this).children().text().trim();
+    var url = $SCRIPT_ROOT + '/catalog/' + category + "/items";
+    $.ajax({
+      url: url,
+      type: "get",
+      success: function(response) {
+        $(".item-container .list-group").html(response);
+        $(".item-container")
+          .parents('fieldset').children('legend').text(category);
+      },
+      error: function(xhr) {
+        $(".item-container .list-group").append(
+            $('<li>!!!Something went poorly!!!</li>')
+              .addClass('list-group-item error-li'));
+      }
+    });
+  });
+});

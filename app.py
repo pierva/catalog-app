@@ -112,9 +112,7 @@ def deleteCategory(id):
             return redirect(url_for('showHome'))
     except exc.SQLAlchemyError as e:
         flash({
-            "message":
-                "Something went wrong while processing your request.\n\n" +
-                e.message,
+            "message": "No category was found.",
             "role": "failure"
              })
         return redirect(url_for('showHome'))
@@ -123,7 +121,24 @@ def deleteCategory(id):
 @app.route("/catalog/<categoryName>")
 @app.route("/catalog/<categoryName>/items")
 def getCategoryItems(categoryName):
-    return 'All items for {}'.format(categoryName)
+    try:
+        session = DBSession()
+        items = session.query(Item).filter_by(category_name=categoryName).all()
+        return render_template("partials/items-list.html", items=items)
+
+    except exc.SQLAlchemyError as e:
+        flash({
+            "message": "No category was found.",
+            "role": "failure"
+             })
+        return redirect(url_for('showHome'))
+    except Exception as e:
+        flash({
+            "message":
+                "Something went wrong while processing your request.",
+            "role": "failure"
+            })
+        return redirect(url_for('showHome'))
 
 
 @app.route("/catalog/<categoryName>/new", methods=['GET', 'POST'])
