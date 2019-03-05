@@ -100,7 +100,6 @@ def deleteCategory(id):
     try:
         session = DBSession()
         category = session.query(Category).filter_by(id=id).first()
-        # consider returning a popup here and then handly with ajax
         if request.method == 'GET':
             return jsonify(category.serialize_category)
         elif request.method == 'POST':
@@ -118,6 +117,7 @@ def deleteCategory(id):
                 e.message,
             "role": "failure"
              })
+        return redirect(url_for('showHome'))
 
 
 @app.route("/catalog/<categoryName>")
