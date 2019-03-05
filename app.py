@@ -187,9 +187,31 @@ def editCategoryItem(categoryName, itemName):
         return redirect(url_for('showHome'))
 
 
-@app.route("/catalog/<categoryName>/<itemName>/delete")
+@app.route("/catalog/<categoryName>/<itemName>/delete", methods=['GET', 'POST'])
 def deleteCategoryItem(categoryName, itemName):
-    return 'Delete {} in {}'.format(itemName, categoryName)
+    try:
+        item = session.query(Item).filter(Item.name == itemName,
+            Item.category_name == categoryName).one()
+        if request.method == 'GET':
+            print item.name
+            print item.category_name
+            return jsonify({"name": item.name, "category": item.category_name})
+        elif request.method == 'POST':
+            session.delete(item)
+            session.commit()
+            flash({
+                "message": "{} deleted.".format(item.name),
+                "role": "success"
+            })
+            return redirect(url_for('showHome'))
+    except exc.SQLAlchemyError as e:
+        flash({
+            "message":
+                "Something went wrong while processing your request.\n\n" +
+                e.message,
+            "role": "failure"
+             })
+        return redirect(url_for('showHome'))
 
 
 if __name__ == '__main__':
