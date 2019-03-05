@@ -121,6 +121,8 @@ legend{
 .description{
   font-style: italic;
   color: rgba(0, 26, 255, 0.6);
+  font-size: 1rem;
+  font-weight: 300;
 }
 
 .list-group-item:hover{
@@ -132,6 +134,14 @@ legend{
 .error-li{
   text-align: center;
   color: #dc3545;
+}
+
+.item-description {
+  text-align: justify;
+  text-justify: inter-word;
+  font-size: 0.8rem;
+  font-style: italic;
+  color: rgba(0, 0, 0, 0.7);
 }
 
 #deleteModal .modal-header,

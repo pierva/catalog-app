@@ -177,7 +177,19 @@ def addCategoryItem(categoryName):
 
 @app.route("/catalog/<categoryName>/<itemName>")
 def getItem(categoryName, itemName):
-    return 'Details for {} in {}'.format(itemName, categoryName)
+    try:
+        session = DBSession()
+        item = session.query(Item).filter(Item.name == itemName,
+            Item.category_name == categoryName).one()
+        return jsonify(item.serialize_item)
+    except exc.SQLAlchemyError as e:
+        return jsonify({
+            "message":
+                "No item was found. Please retry.",
+            "role": "failure"
+            })
+    except Exception as e:
+        return redirect(url_for('showHome'))
 
 
 @app.route("/catalog/<categoryName>/<itemName>/edit", methods=['GET', 'POST'])
@@ -210,8 +222,6 @@ def deleteCategoryItem(categoryName, itemName):
         item = session.query(Item).filter(Item.name == itemName,
             Item.category_name == categoryName).one()
         if request.method == 'GET':
-            print item.name
-            print item.category_name
             return jsonify({"name": item.name, "category": item.category_name})
         elif request.method == 'POST':
             session.delete(item)

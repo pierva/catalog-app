@@ -63,3 +63,18 @@ $(function(){
     });
   });
 });
+
+$('.item-container li').on('click', function(){
+  var item = $(this).children('div').data("item-name");
+  var category = $(this).children('.description').text().trim();
+  var url = $SCRIPT_ROOT + '/catalog/' + category + "/" + item;
+  $.getJSON(url, function(item){
+    if(item.message){
+      $(".error-li").text(item.message)
+    } else {
+      $("#previewModalLabel").text(item.name);
+      $("#itemImage").attr('src', item.picture);
+      $(".item-description").text(item.description);
+    }
+  });
+});
