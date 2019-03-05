@@ -2,11 +2,13 @@
 
 {% include 'partials/modal.html' %}
 {% include 'partials/edit-modal.html' %}
+{% include 'partials/delete-modal.html' %}
+
 
 {% block body %}
   <div class="container-fluid">
     <div class="row mt-5">
-      <div class="col-sm-5">
+      <div class="col-md-5">
         <fieldset class="mb-3">
           <legend>Categories List</legend>
           <div class="scrollable">
@@ -17,7 +19,7 @@
                 <span class="category-name" data-category-id="{{category.id}}">{{category.name}}</span>
               </div>
 
-              <div class="float-left delete">
+              <div class="float-left delete" data-toggle='modal' data-target='#deleteModal'>
                 <a href="#">
                   <div class="">
                     <button type="submit" name="button"
@@ -38,25 +40,51 @@
                   </div>
                 </a>
               </div>
+
+              <div class="float-left new-item">
+                <a href="{{url_for('addCategoryItem', categoryName=category.name)}}">
+                  <div class="">
+                    <button type="submit" name="button"
+                      class="btn btn-lg form-control btn-outline-primary">
+                      <span class="fas fa-plus"></span>
+                    </button>
+                  </div>
+                </a>
+              </div>
             </div>
             {% endfor %}
 
           </div>
         </fieldset>
       </div>
-      <div class="col-sm-7 mb-3 items-container">
+      <div class="col-md-7 mb-3">
         <fieldset class="mb-3">
           <legend>Recently added items</legend>
           <div class="scrollable">
-            {% for item in items %}
             <div class="item-container">
-              <div class="">
-                {{item.name}} <span>{{item.category}}</span>
-              </div>
-              </div>
-              {% endfor %}
+              <ul class="list-group list-group-flush">
+                {% for item in items %}
+                <li class="list-group-item">
+                  {{item.name}}
+                  <span class="description">
+                      {{item.category_name}}
+                  </span>
+                  <div class="ml-auto">
+                    <a href="{{url_for('editCategoryItem', categoryName = item.category_name, itemName = item.name)}}"
+                      class="btn btn-sm btn-outline-warning">
+                      <span class="fas fa-edit"></span>
+                    </a>
+                    <button type="submit" name="button"
+                      class="btn btn-sm btn-outline-danger">
+                      <span class="fas fa-trash-alt"></span>
+                    </button>
+                  </div>
+                </li>
+                {% endfor %}
+              </ul>
             </div>
-          </fieldset>
+          </div>
+        </fieldset>
       </div>
     </div>
   </div>

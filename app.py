@@ -29,7 +29,9 @@ def showHome():
     try:
         session = DBSession()
         categories = session.query(Category).all()
-        return render_template('home.html', categories=categories, user=None)
+        items = session.query(Item).order_by(Item.id.desc()).limit(7)
+        return render_template('home.html',
+            categories=categories, user=None, items=items)
 
     except exc.SQLAlchemyError as e:
         flash({
@@ -135,7 +137,9 @@ def addCategoryItem(categoryName):
             newItem = Item(
                 name = request.form['name'],
                 picture = request.form['picture'],
-                description = request.form['description']
+                description = request.form['description'],
+                category_id = category.id,
+                category_name = category.name
             )
             session.add(newItem)
             session.commit()

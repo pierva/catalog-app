@@ -51,7 +51,7 @@ legend{
   position: relative;
   margin: 0px auto;
   outline: none;
-  font-weight: normal;
+  font-weight: 300;
   text-align: center;
   color: hsla(0,0%,20%,1);
   text-shadow: hsla(0,0%,40%,.5) 0 -1px 0, hsla(0,0%,100%,.6) 0 2px 1px;
@@ -60,7 +60,7 @@ legend{
               box-shadow: inset 0px 0px 3px 0px rgba(0,0,0,0.75);
   transition: all 0.3s;
   cursor: pointer;
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   border-radius: .25rem;
   line-height: 1.5rem;
   vertical-align: middle;
@@ -85,13 +85,17 @@ legend{
   background-color: rgb(215, 220, 230);
 }
 
-.edit, .delete {
+.edit,
+.delete,
+.new-item {
   opacity: 0;
   width: 0;
   transform: translate(210%, 0%);
 }
 
-.controls:hover > .edit, .controls:hover > .delete {
+.controls:hover > .edit,
+.controls:hover > .delete,
+.controls:hover > .new-item {
   transition: 0.3s;
   transition-timing-function: ease-out;
   transform: translateY(0);
@@ -99,17 +103,37 @@ legend{
   width: auto;
 }
 
-.controls .edit, controls .delete{
+.controls .edit,
+.controls .delete,
+.controls .new-item{
   transition-timing-function: ease-in;
   transition: 0.2s;
 }
 
-.modal-header, .close{
+.modal-header,
+.close{
   color: rgba(255, 255, 255, 0.5);
   background-color: #343a40;
 }
 
-#deleteModal .modal-header, #deleteModal .modal-header .close{
+.item-container{
+  font-size: 1.2rem;
+  color: rgb(0, 26, 255);
+}
+
+.description{
+  font-style: italic;
+  color: rgba(0, 26, 255, 0.6);
+}
+
+.list-group-item:hover{
+  cursor: pointer;
+  background: rgba(0, 26, 255, 0.15);
+  font-weight: bold;
+}
+
+#deleteModal .modal-header,
+#deleteModal .modal-header .close{
   background-color: rgb(176, 9, 9);
   color: rgb(255, 255, 255);
 }
