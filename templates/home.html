@@ -9,9 +9,9 @@
   <div class="container-fluid">
     <div class="row mt-5">
       <div class="col-md-5">
-        <fieldset class="mb-3">
+        <fieldset class="mb-3 category-field">
           <legend>Categories List</legend>
-          <div class="scrollable">
+          <div class="scrollable categories-container">
 
             {% for category in categories %}
             <div class="d-inline-flex w-100 controls">
@@ -58,7 +58,7 @@
         </fieldset>
       </div>
       <div class="col-md-7 mb-3">
-        <fieldset class="mb-3">
+        <fieldset class="mb-3 item-field">
           <legend>Recently added items</legend>
           <div class="scrollable">
             <div class="item-container">
