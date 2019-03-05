@@ -97,3 +97,8 @@ legend{
   transition-timing-function: ease-in;
   transition: 0.2s;
 }
+
+.modal-header, .close{
+  color: rgba(255, 255, 255, 0.5);
+  background-color: #343a40;
+}

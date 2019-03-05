@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Catalog App</title>
+    {% include 'partials/style_links.html'%}
+  </head>
+  <body>
+    {% include 'partials/navigation.html'%}
+    {% include 'partials/flash.html'%}
+
+    {% block body %}{% endblock%}
+
+    {% include 'partials/libraries.html'%}
+    {% block script %} {% endblock %}
+  </body>
+</html>

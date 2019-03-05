@@ -50,9 +50,9 @@ class Category(Base):
     @property
     def serialize_category(self):
         return {
-        'id': self.id,
-        'name': self.name,
-        'user_id': self.user_id
+            'id': self.id,
+            'name': self.name,
+            'user_id': self.user_id
         }
 
 

@@ -67,11 +67,11 @@ def newCategory():
             return redirect('/')
 
 
-@app.route("/catalog/<categoryName>/edit", methods=['GET','POST'])
-def editCategory(categoryName):
+@app.route("/catalog/<int:id>/edit", methods=['GET','POST'])
+def editCategory(id):
     try:
         session = DBSession()
-        category = session.query(Category).filter_by(name=categoryName).first()
+        category = session.query(Category).filter_by(id=id).one()
         if request.method == 'POST':
             category.name = request.form['name']
             session.add(category)
@@ -82,9 +82,7 @@ def editCategory(categoryName):
                  })
             return redirect(url_for('showHome'))
         elif request.method == 'GET':
-            # consider returning a popup here and then handle it with ajax
-            print category
-            return render_template('edit_category.html', category=category)
+            return jsonify(category.serialize_category)
     except exc.SQLAlchemyError as e:
         flash({
             "message":
@@ -95,11 +93,11 @@ def editCategory(categoryName):
         return redirect('/')
 
 
-@app.route("/catalog/<categoryName>/delete", methods=['GET', 'POST'])
-def deleteCategory(categoryName):
+@app.route("/catalog/<int:id>/delete", methods=['GET', 'POST'])
+def deleteCategory(id):
     try:
         session = DBSession()
-        category = session.query(Category).filter_by(name=categoryName).first()
+        category = session.query(Category).filter_by(id=id).first()
         # consider returning a popup here and then handly with ajax
         if request.method == 'GET':
             return jsonify(category.serialize_category())

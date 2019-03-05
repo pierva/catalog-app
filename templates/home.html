@@ -1,69 +1,66 @@
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title>Catalog App</title>
-    {% include 'partials/style_links.html'%}
-  </head>
-  <body>
-    {% include 'partials/navigation.html'%}
-    {% include 'partials/flash.html'%}
+{% extends 'base.html' %}
 
-    <div class="container-fluid">
-      <div class="row mt-5">
-        <div class="col-sm-5">
-          <fieldset class="mb-3">
-            <legend>Categories List</legend>
-            <div class="scrollable">
+{% include 'partials/modal.html' %}
+{% include 'partials/edit-modal.html' %}
 
-              {% for category in categories %}
-              <div class="d-inline-flex w-100 controls">
-                <div class="metal linear float-left w-100">
-                  <span>{{category.name}}</span>
-                </div>
+{% block body %}
+  <div class="container-fluid">
+    <div class="row mt-5">
+      <div class="col-sm-5">
+        <fieldset class="mb-3">
+          <legend>Categories List</legend>
+          <div class="scrollable">
 
-                <div class="float-left delete">
-                  <a href="{{url_for('deleteCategory', categoryName=category.name)}}">
-                    <div class="">
-                      <button type="submit" name="button" class="btn form-control btn-outline-danger">
-                        <span class="fas fa-trash-alt"></span>
-                      </button>
-                    </div>
-                  </a>
-                </div>
+            {% for category in categories %}
+            <div class="d-inline-flex w-100 controls">
+              <div class="metal linear float-left w-100">
+                <span class="category-name" data-category-id="{{category.id}}">{{category.name}}</span>
+              </div>
 
-                <div class="float-left edit">
-                  <a href="{{url_for('editCategory', categoryName=category.name)}}">
-                    <div class="">
-                      <button type="submit" name="button" class="btn form-control btn-outline-warning">
-                        <span class="fas fa-edit"></span>
-                      </button>
-                    </div>
-                  </a>
-                </div>
+              <div class="float-left delete">
+                <a href="#">
+                  <div class="">
+                    <button type="submit" name="button" class="btn form-control btn-outline-danger">
+                      <span class="fas fa-trash-alt"></span>
+                    </button>
+                  </div>
+                </a>
+              </div>
+
+              <div class="float-left edit" data-toggle='modal' data-target='#editModal'>
+                <a href="#">
+                  <div class="">
+                    <button type="submit" name="button" class="btn form-control btn-outline-warning">
+                      <span class="fas fa-edit"></span>
+                    </button>
+                  </div>
+                </a>
+              </div>
+            </div>
+            {% endfor %}
+
+          </div>
+        </fieldset>
+      </div>
+      <div class="col-sm-7 mb-3 items-container">
+        <fieldset class="mb-3">
+          <legend>Recently added items</legend>
+          <div class="scrollable">
+            {% for item in items %}
+            <div class="item-container">
+              <div class="">
+                {{item.name}} <span>{{item.category}}</span>
+              </div>
               </div>
               {% endfor %}
-
             </div>
           </fieldset>
-        </div>
-        <div class="col-sm-7 mb-3 items-container">
-          <fieldset class="mb-3">
-            <legend>Recently added items</legend>
-            <div class="scrollable">
-              {% for item in items %}
-              <div class="item-container">
-                <div class="">
-                  {{item.name}} <span>{{item.category}}</span>
-                </div>
-                </div>
-                {% endfor %}
-              </div>
-            </fieldset>
-        </div>
       </div>
     </div>
+  </div>
 
-    {% include 'partials/libraries.html'%}
-  </body>
-</html>
+{% endblock %}
+
+{% block script %}
+  <script src="{{url_for('static', filename='js/app.js')}}"></script>
+{% endblock %}
