@@ -235,7 +235,29 @@ def fbdisconnect():
 
 @app.route('/disconnect')
 def disconnect():
-    return 'Logout page'
+    if 'provider' in login_session:
+        if login_session['provider'] == 'google':
+            gdisconnect()
+            del login_session['gplus_id']
+        if login_session['provider'] == 'facebook':
+            fbdisconnect()
+            del login_session['facebook_id']
+        del login_session['username']
+        del login_session['email']
+        del login_session['picture']
+        del login_session['user_id']
+        del login_session['provider']
+        flash({
+            "message": "You have been successfully logged out.",
+            "role": "success"
+             })
+        return redirect(url_for('showHome'))
+    else:
+        flash({
+            "message": "Unable to logout. No user logged in.",
+            "role": "failure"
+             })
+        return redirect(url_for('showRestaurants'))
 
 @app.route("/")
 @app.route("/catalog")
