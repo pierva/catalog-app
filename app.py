@@ -218,6 +218,21 @@ def fbconnect():
         })
     return output
 
+@app.route('/fbdisconnect')
+def fbdisconnect():
+    facebook_id = login_session['facebook_id']
+    # The access token must me included to successfully logout
+    access_token = login_session['access_token']
+    url = 'https://graph.facebook.com/{}/permissions?access_token={}'.format(
+            facebook_id,access_token
+        )
+    h = httplib2.Http()
+    result = h.request(url, 'DELETE')[1]
+    flash({
+        "messge": "Successfully logged out",
+        "role": "success"
+        })
+
 @app.route('/disconnect')
 def disconnect():
     return 'Logout page'
