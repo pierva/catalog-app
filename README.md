@@ -21,7 +21,7 @@ DELETE CATEGORY ['DELETE'] => Delete the category in the catalog
 
 CATEGORY => Shows the items for that specific category
 
-`/catalog/<categoryName>/`
+`/catalog/<categoryName>/` <br>
 `/catalog/<categoryName>/items`
 
 ITEM ['GET']=> Get item details
