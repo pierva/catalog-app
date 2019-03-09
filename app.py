@@ -20,9 +20,6 @@ from oauth2client.client import FlowExchangeError
 import httplib2
 import json
 
-CLIENT_ID = json.loads(
-    open('instance/g_client_secrets.json', 'r').read())['web']['client_id']
-
 app = Flask(__name__)
 engine = create_engine('sqlite:///catalog.db')
 Base.metadata.bind = engine
@@ -45,6 +42,8 @@ def showLogin():
 
 @app.route('/gconnect', methods=['POST'])
 def gconnect():
+    CLIENT_ID = json.loads(
+        open('instance/g_client_secrets.json', 'r').read())['web']['client_id']
     # Validate state token
     if request.args.get('state') != login_session['state']:
         response = make_response(json.dumps('Invalid state parameter.'), 401)
@@ -165,11 +164,11 @@ def fbconnect():
         response.headers['Content-Type'] = 'application/json'
         return response
     access_token = request.data
-
-    app_id = json.loads(open('fb_client_secrets.json', 'r').read())[
+    app_id = json.loads(open('instance/fb_client_secrets.json', 'r').read())[
         'web']['app_id']
     app_secret = json.loads(
-        open('fb_client_secrets.json', 'r').read())['web']['app_secret']
+        open('instance/fb_client_secrets.json', 'r').read())['web']['app_secret']
+
     url = 'https://graph.facebook.com/oauth/access_token?grant_type=fb_exchange_token&client_id=%s&client_secret=%s&fb_exchange_token=%s' % (
         app_id, app_secret, access_token)
     h = httplib2.Http()
@@ -177,12 +176,23 @@ def fbconnect():
 
     # Use token to get user info from API
     userinfo_url = "https://graph.facebook.com/v3.2/me"
+    '''
+        Due to the formatting for the result from the server token exchange we have to
+        split the token first on commas and select the first index which gives us the key : value
+        for the server access token then we split it on colons to pull out the actual token value
+        and replace the remaining quotes with nothing so that it can be used directly in the graph
+        api calls
+    '''
     token = result.split(',')[0].split(':')[1].replace('"', '')
 
     url = 'https://graph.facebook.com/v2.8/me?access_token=%s&fields=name,id,email' % token
     h = httplib2.Http()
     result = h.request(url, 'GET')[1]
+    # print "url sent for API access:%s"% url
+    # print "API JSON result: %s" % result
     data = json.loads(result)
+    print( "Data is:")
+    print( data)
     login_session['provider'] = 'facebook'
     login_session['username'] = data["name"]
     login_session['email'] = data["email"]
@@ -196,6 +206,7 @@ def fbconnect():
     h = httplib2.Http()
     result = h.request(url, 'GET')[1]
     data = json.loads(result)
+
     login_session['picture'] = data["data"]["url"]
 
     # see if user exists
@@ -212,10 +223,8 @@ def fbconnect():
     output += login_session['picture']
     output += ' " style = "width: 300px; height: 300px;border-radius: 150px;-webkit-border-radius: 150px;-moz-border-radius: 150px;"> '
 
-    flash({
-        "messge": "Now logged in as {}".format(login_session['username']),
-        "role": "success"
-        })
+    flash({"message": "Now logged in as {}".format(login_session['username']),
+         "role": "success"})
     return output
 
 @app.route('/fbdisconnect')
@@ -235,6 +244,7 @@ def fbdisconnect():
 
 @app.route('/disconnect')
 def disconnect():
+    print(login_session)
     if 'provider' in login_session:
         if login_session['provider'] == 'google':
             gdisconnect()
@@ -257,7 +267,7 @@ def disconnect():
             "message": "Unable to logout. No user logged in.",
             "role": "failure"
              })
-        return redirect(url_for('showRestaurants'))
+        return redirect(url_for('showHome'))
 
 @app.route("/")
 @app.route("/catalog")
