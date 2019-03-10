@@ -4,7 +4,7 @@
 
 <div class="container mt-5">
   <h2 class="page-title">Edit {{item.name}} in {{ item.category_name }}</h2>
-  <form class="mt-5" action="{{url_for('editCategoryItem',
+  <form class="mt-5" action="{{url_for('item.editCategoryItem',
       categoryName=item.category_name, itemName=item.name)}}" method="POST">
     <div class="form-group">
       <label for="name">Item Name</label>

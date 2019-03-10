@@ -41,7 +41,7 @@
               </div>
 
               <div class="float-left new-item">
-                <a href="{{url_for('addCategoryItem', categoryName=category.name)}}">
+                <a href="{{url_for('item.addCategoryItem', categoryName=category.name)}}">
                   <div class="">
                     <button type="submit" name="button"
                       class="btn btn-lg form-control btn-outline-primary">
@@ -69,7 +69,7 @@
                       {{item.category_name}}
                   </span>
                   <div data-item-name="{{item.name}}">
-                    <a href="{{url_for('editCategoryItem',
+                    <a href="{{url_for('item.editCategoryItem',
                       categoryName = item.category_name, itemName = item.name)}}"
                       class="btn btn-sm btn-outline-warning">
                       <span class="fas fa-edit"></span>

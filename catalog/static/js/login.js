@@ -31,7 +31,7 @@ function signInCallback(authResult) {
 
 window.fbAsyncInit = function() {
   FB.init({
-    appId      : 'YOUR-APP-ID',
+    appId      : '321084222084716',
     cookie     : true,
     xfbml      : true,
     version    : 'v3.2'
@@ -39,9 +39,9 @@ window.fbAsyncInit = function() {
 
   FB.AppEvents.logPageView();
 
-  FB.getLoginStatus(function(response) {
-    statusChangeCallback(response);
-  });
+  // FB.getLoginStatus(function(response) {
+  //   statusChangeCallback(response);
+  // });
 };
 
 // Load the FB SDK asynchronously

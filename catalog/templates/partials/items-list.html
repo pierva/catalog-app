@@ -5,7 +5,7 @@
       {{item.category_name}}
   </span>
   <div data-item-name="{{item.name}}">
-    <a href="{{url_for('editCategoryItem',
+    <a href="{{url_for('item.editCategoryItem',
       categoryName = item.category_name, itemName = item.name)}}"
       class="btn btn-sm btn-outline-warning">
       <span class="fas fa-edit"></span>
