@@ -144,6 +144,26 @@ legend{
   color: rgba(0, 0, 0, 0.7);
 }
 
+.login-container{
+  width: 75%;
+  margin: 10% auto;
+  height: 400px;
+  border: 1px solid rgba(22, 22, 22, 1);
+  border-radius: 5px;
+  font-size: 1.5rem;
+  background: rgba(51, 51, 51, 0.75);
+  box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.google-login{
+  width: 300px;
+  margin: 0 auto;
+}
+
 #deleteModal .modal-header,
 #deleteModal .modal-header .close{
   background-color: rgb(176, 9, 9);
