@@ -1,0 +1,85 @@
+{% extends 'base.html'%}
+ {% block body %}
+  <h5 class="text-center header">REGISTER USER</h5>
+  <div class="vertical-center">
+    <div class="container">
+
+      <form class="center-form" role="form" method="post" action="">
+        {{ form.csrf_token }}
+        <div class="form-group">
+          <label for="email">Email address or Username</label>
+          {{ form.email(placeholder="email or username", class="form-control",
+            required=true) }}
+          <span class="error">
+            {% if form.email.errors %}
+              {% for error in form.email.errors %}
+                {{ error }}
+              {% endfor %}
+            {% endif %}
+          </span>
+        </div>
+        <div class="separator">
+          <hr class="separator-line">
+          <span class="ml-3 mr-3 mt-1">and</span>
+          <hr class="separator-line">
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          {{ form.password(placeholder="password", class="form-control")}}
+            <small class="form-text text-muted">
+              Password must be mimimum <span id='eight'>8 characters</span>,
+              contain a <span id="aLowercase">lowercase letter</span>,
+              a <span id="aUppercase">Uppercase letter</span>
+              and a <span id="aNumber">Number</span>
+            </small>
+          <span class="error">
+            {% if form.password.errors %}
+              {% for error in form.password.errors %}
+                {{ error }}
+              {% endfor %}
+            {% endif %}
+          </span>
+        </div>
+        <div class="form-group">
+          <label for="confirm">Confirm Password</label>
+          {{ form.confirm(placeholder="confirm password",
+             class="form-control") }}
+          <span class="error">
+            {% if form.confirm.errors %}
+              {% for error in form.confirm.errors %}
+                {{ error }}
+              {% endfor %}
+            {% endif %}
+          </span>
+        </div>
+        <div class="form-check">
+          {{ form.admin(class="form-check-input") }}
+          <label for="admin" class="form-check-label">Admin User</label>
+          <small class="form-text text-muted">
+              By clicking this checkbox you'll give this user access to admin functionalities.
+          </small>
+          <span class="error">
+            {% if form.admin.errors %}
+              {% for error in form.admin.errors %}
+                {{ error }}
+              {% endfor %}
+            {% endif %}
+          </span>
+        </div>
+        <div class="text-right">
+          <button disabled id='submitLogin' type="submit"
+            class="btn btn-primary">
+              Register&nbsp;<span class="fas fa-user-plus"></span>
+            </button>
+        </div>
+        <p>Already have an account? <a href="/login">Sign in</a>.</p>
+      </form>
+    </div>
+  </div>
+
+
+{% endblock %}
+{% block script %}
+  <script src="{{url_for('static', filename='js/register.js')}}"></script>
+
+{% endblock %}

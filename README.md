@@ -1,5 +1,38 @@
 # Catalog App
 
+## Get Started
+### Set Environment Variables
+
+```sh
+$ export APP_SETTINGS="catalog.config.DevelopmentConfig"
+```
+
+or
+
+```sh
+$ export APP_SETTINGS="catalog.config.ProductionConfig"
+```
+
+### Update Settings in Production
+
+1. `SECRET_KEY`
+1. `SQLALCHEMY_DATABASE_URI`
+
+### Create DB
+
+```sh
+$ python3 manage.py create_db
+$ python3 manage.py db init
+$ python3 manage.py db migrate
+```
+
+### Run
+
+```sh
+$ python manage.py runserver
+```
+
+
 ### Routes specification
 HOME => Shows all categories on the left and last added items
 

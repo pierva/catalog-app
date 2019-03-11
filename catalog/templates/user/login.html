@@ -1,82 +1,52 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta name="google-signin-client_id"
-    content="235275093564-fqtgv22sh0m7l5f793at5p9nn7ql13bc.apps.googleusercontent.com">
-  <title>Catalog App | Login</title>
-  {% include 'partials/style_links.html'%}
-</head>
-<body>
-  <div class="container text-center mt-3">
-    <div id="result">
-      Trying to load data from the server...
-    </div>
-    <div class="login-container">
-      <p class="mb-5">Please login with one of the below providers.</p>
-      <div id="signinButton">
-        <span class="g-signin"
-          data-scope="openid email"
-          data-clientid="235275093564-fqtgv22sh0m7l5f793at5p9nn7ql13bc.apps.googleusercontent.com"
-          data-redirecturi="postmessage"
-          data-accesstype="offline"
-          data-cookiepolicy="single_host_origin"
-          data-callback="signInCallback"
-          data-approvalprompt="force">
+{% extends 'base.html'%}
+ {% block body %}
+  <h5 class="text-center header">LOGIN PAGE</h5>
+  <div class="mt-5">
+    <form class="login-container" action="{{url_for('user.login')}}" method="POST">
+      <div>
+        <label for="email">Email or Username</label>
+        {{ form.email(placeholder="email or username", class="form-control",
+          required=true) }}
+        <span class="error">
+          {% if form.email.errors %}
+            {% for error in form.email.errors %}
+              {{ error }}
+            {% endfor %}
+          {% endif %}
         </span>
       </div>
+      <div class="separator">
+        <hr class="separator-line">
+        <span class="ml-3 mr-3 mt-1">and</span>
+        <hr class="separator-line">
+      </div>
+      <div>
+        <label for="password">Password</label>
+        {{ form.password(placeholder="password", class="form-control",
+           required=true)}}
+        <span class="error">
+          {% if form.password.errors %}
+            {% for error in form.password.errors %}
+              {{ error }}
+            {% endfor %}
+          {% endif %}
+        </span>
+      </div>
+      <div class="text-right">
+        <button  id='submitLogin' type="submit" class="btn btn-primary">
+            SIGN IN
+            <span class="fas fa-sign-in-alt"></span>
+        </button>
+      </div>
+      {{ form.csrf_token }}
+    </form>
+    <div class="login-container">
+      New to CatalogApp?
+        <a href="{{url_for('user.register')}}">Create an account.</a>
+    </div>
   </div>
-  <script>
-    function onSuccess(googleUser) {
-      console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
-    }
-    function onFailure(error) {
-      console.log(error);
-    }
-    function renderButton() {
-      gapi.signin2.render('my-signin2', {
-        'scope': 'profile email',
-        'width': 240,
-        'height': 50,
-        'longtitle': true,
-        'theme': 'dark',
-        'onsuccess': onSuccess,
-        'onfailure': onFailure
-      });
-    }
 
-    // GOOGLE login
-  function signInCallback(authResult) {
-    console.log("Calling callback");
-    if (authResult['code']) {
-      // Hide the sign-in button now that the user is authorized
-      $('.login-container').attr('style', 'display: none');
-      // Send the one-time-use code to the server, if the server responds, write a 'login successful' message to the web page and then redirect back to the main restaurants page
-      $.ajax({
-        type: 'POST',
-        url: '/gconnect?state={{STATE}}',
-        processData: false,
-        data: authResult['code'],
-        contentType: 'application/octet-stream; charset=utf-8',
-        success: function(result) {
-          // Handle or verify the server response if necessary.
-          if (result) {
-            $('#result').html('Login Successful!</br>'+ result + '</br>Redirecting...')
-           setTimeout(function() {
-            window.location.href = "/catalog";
-          }, 2000);
-
-        } else if (authResult['error']) {
-          console.log('There was an error: ' + authResult['error']);
-        } else {
-          $('#result').html('Failed to make a server-side call. Check your configuration and console.');
-           }
-        }
-
-      });
-    }
-  }
-  </script>
-
-  <script src="https://apis.google.com/js/platform.js?onload=start" async defer></script>
-</body>
-</html>
+{% endblock %}
+{% block script %}
+  <script src="{{url_for('static', filename='js/login.js')}}"></script>
+{% endblock %}

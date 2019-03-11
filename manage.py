@@ -37,7 +37,8 @@ def create_user():
     """Creates the admin user."""
     db.session.add(User(
         email="pvignola@carnival.com",
-        password="Pierva1234"
+        password="Pierva1234",
+        admin= True
         )
     )
     db.session.commit()

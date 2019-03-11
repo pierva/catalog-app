@@ -10,11 +10,15 @@ class User(db.Model):
     email = db.Column(db.String, nullable=False, index=True, unique=True)
     password = db.Column(db.String(64), nullable=False)
     registered_on = db.Column(db.DateTime, nullable=False)
+    admin = db.Column(db.Boolean, nullable=False, default=False)
 
-    def __init__(self, email, password):
+    # categories = db.relationship("Category")
+
+    def __init__(self, email, password, admin):
         self.email = email
         self.password = bcrypt.generate_password_hash(password)
         self.registered_on = datetime.datetime.now()
+        self.admin = admin
 
     def is_authenticated(self):
         return True
@@ -36,9 +40,9 @@ class Category(db.Model):
     __tablename__ = 'category'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
+
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    user = db.relationship(User)
-    # items = relationship("Item", cascade="all, delete-orphan")
+    db.relationship(User)
 
     @property
     def serialize_category(self):
@@ -55,10 +59,10 @@ class Item(db.Model):
     name = db.Column(db.String(50), nullable=False)
     picture = db.Column(db.String, nullable=True)
     description = db.Column(db.String)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    user = db.relationship(User)
+
     category_id = db.Column(db.Integer, db.ForeignKey('category.id'))
     category_name = db.Column(db.Integer, db.ForeignKey('category.name'))
+    user_id = db.Column(db.Integer, db.ForeignKey('category.user_id'))
     db.relationship(Category)
 
     @property

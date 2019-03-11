@@ -11,13 +11,14 @@
   <div class="collapse navbar-collapse" id="navbarText">
     <ul class="navbar-nav ml-auto">
       <li class="nav-item">
+        {% if user.email %}
         <a id='newCategory' class="nav-link" href="#"
           data-toggle='modal' data-target='#categoryModal'>New Category</a>
-
+        {% endif %}
       </li>
-      {% if user %}
+      {% if user.email %}
       <li class="nav-item">
-        <a class="nav-link" href="{{url_for('disconnect')}}">Logout</a>
+        <a class="nav-link" href="{{url_for('user.logout')}}">Logout</a>
       </li>
       {% else %}
       <li class="nav-item">
@@ -26,5 +27,17 @@
       {% endif %}
     </ul>
   </div>
-
 </nav>
+
+<div class="logged-user container clearfix">
+  <div class="float-right">
+    {% if user.email %}
+      Logged in as <strong>{{user.email}}</strong>
+      {% if user.admin%}
+      | ADMIN
+      {% endif %}
+    {% else %}
+      <a href="{{url_for('user.login')}}">No user logged in</a>
+    {% endif %}
+  </div>
+</div>
