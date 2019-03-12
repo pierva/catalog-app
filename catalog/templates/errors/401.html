@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block body %}
+
+<div class="container">
+  <h1>401</h1>
+  <p>Access anauthorized.</p>
+  <p><em>Return
+    <a href="{{url_for('main.showHome')}}">Home</a>
+    &nbsp;or&nbsp;<a href="{{url_for('user.login')}}">Login</a>?
+  </em></p>
+</div>
+{% endblock %}
