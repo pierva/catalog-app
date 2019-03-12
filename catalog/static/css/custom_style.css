@@ -193,6 +193,14 @@ legend{
   font-weight: 300;
 }
 
+.login-picture{
+  width: 150px;
+  height: 150px;
+  border-radius: 75px;
+  -webkit-border-radius:
+  75px;-moz-border-radius: 75px;
+}
+
 #deleteModal .modal-header,
 #deleteModal .modal-header .close{
   background-color: rgb(176, 9, 9);

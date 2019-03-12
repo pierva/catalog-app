@@ -1,7 +1,23 @@
 {% extends 'base.html'%}
+{% block head %}
+<script src="{{url_for('static', filename = 'js/lib/jquery-3.3.1.js')}}"></script>
+<script src="https://apis.google.com/js/client:platform.js?onload=start" async defer>
+</script>
+<script>
+  function start() {
+    gapi.load('auth2', function() {
+      auth2 = gapi.auth2.init({
+          client_id: 'your-client-id.apps.googleusercontent.com',
+      });
+    });
+  }
+</script>
+{% endblock %}
+
  {% block body %}
   <h5 class="text-center header">LOGIN PAGE</h5>
   <div class="mt-5">
+    <div class="" id="result"></div>
     <form class="login-container" action="{{url_for('user.login')}}" method="POST">
       <div>
         <label for="email">Email or Username</label>
@@ -46,7 +62,40 @@
     </div>
   </div>
 
+<div class="login-container">
+
+<button id="signinButton">Sign in with Google</button>
+</div>
+
 {% endblock %}
 {% block script %}
   <script src="{{url_for('static', filename='js/login.js')}}"></script>
+  <script>
+    $(function() {
+      $('#signinButton').on('click', function() {
+        auth2.grantOfflineAccess().then(signInCallback);
+      });
+
+      function signInCallback(authResult) {
+        if (authResult['code']) {
+          // Send the one-time-use code to the server, if the server responds, write a 'login successful' message to the web page and then redirect back to the main restaurants page
+          $.ajax({
+            type: 'POST',
+            url: '/gconnect?state={{STATE}}',
+            headers: {
+              'X-Requested-With': 'XMLHttpRequest'
+            },
+            contentType: 'application/octet-stream; charset=utf-8',
+            processData: false,
+            data: authResult['code'],
+            success: function(result) {
+              $("#result").html(result);
+            }
+          });
+        } else {
+          console.log('Error');
+        }
+      }
+    });
+  </script>
 {% endblock %}
