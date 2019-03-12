@@ -198,7 +198,7 @@ def gconnect():
         login_session['provider'] = 'google'
     except KeyError as e:
         output = ''
-        output += "Something wrong with your account. Unable to retrieve %s" % e
+        output += "Something wrong with your account. Unable to retrieve %s" %e
         return output
 
     # Check if user exists, if not, create a new one
@@ -210,7 +210,7 @@ def gconnect():
     output += '!</h3>'
     output += '<img src="'
     output += login_session['picture']
-    output += ' " class = "login-image"> '
+    output += ' " class = "login-picture"> '
     flash({'message': 'You are now logged in as {}'.format(
         login_session['username']), 'role': 'success'})
     return output
@@ -250,7 +250,7 @@ def createUser(login_session):
                        admin=False)
         db.session.add(newUser)
         db.session.commit()
-        user = User.query.filter_by(email = login_session['email']).one()
+        user = User.query.filter_by(email=login_session['username']).one()
         return user.id
     except exc.SQLAlchemyError as e:
         return None

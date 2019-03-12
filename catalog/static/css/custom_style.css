@@ -194,11 +194,11 @@ legend{
 }
 
 .login-picture{
-  width: 150px;
-  height: 150px;
-  border-radius: 75px;
-  -webkit-border-radius:
-  75px;-moz-border-radius: 75px;
+  width: 80px;
+  height: 80px;
+  border-radius: 40px;
+  -webkit-border-radius: 40px;
+  -moz-border-radius: 40px;
 }
 
 #deleteModal .modal-header,
