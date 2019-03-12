@@ -77,7 +77,6 @@ def register():
                 db.session.add(user)
                 db.session.commit()
                 token = generate_confirmation_token(user.email)
-
                 login_user(user)
                 flash({'message': 'New user successfully created',
                        'role': 'success'})
@@ -100,10 +99,23 @@ def register():
 @login_required
 def logout():
     try:
-        logout_user()
-        flash({'message': 'You were successfully logged out.',
-               'role': 'success'})
-        return redirect(url_for('user.login'))
+        if 'provider' in login_session:
+            if login_session['provider'] == 'google':
+                gdisconnect()
+                del login_session['gplus_id']
+            del login_session['username']
+            del login_session['email']
+            del login_session['picture']
+            del login_session['user_id']
+            del login_session['provider']
+            flash({"message": "You have been successfully logged out.",
+                   "role": "success"})
+            return redirect(url_for('main.showHome'))
+        else:
+            logout_user()
+            flash({'message': 'You were successfully logged out.',
+                   'role': 'success'})
+            return redirect(url_for('main.showHome'))
     except Exception as e:
         return redirect(url_for('user.login'))
 
@@ -126,7 +138,6 @@ def gconnect():
             scope='')
         oauth_flow.redirect_uri = 'postmessage'
         credentials = oauth_flow.step2_exchange(code)
-        print(credentials)
     except FlowExchangeError:
         response = make_response(
             json.dumps('Failed to upgrade the authorization code.'), 401)
@@ -135,8 +146,8 @@ def gconnect():
 
         # Check that the access token is valid.
     access_token = credentials.access_token
-    url = ('https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=%s'
-           % access_token)
+    url = ('https://www.googleapis.com/oauth2/v1/tokeninfo?access_token={}'.
+        format(access_token))
     h = httplib2.Http()
     result = json.loads(h.request(url, 'GET')[1].decode('utf-8'))
 
@@ -167,6 +178,7 @@ def gconnect():
         response = make_response(
             json.dumps('Current user is already connected.'),200)
         response.headers['Content-Type'] = 'application/json'
+        checkAndCreateUser(login_session['username'])
         return response
 
     # Store the access token in the session for later use.
@@ -188,6 +200,10 @@ def gconnect():
         output = ''
         output += "Something wrong with your account. Unable to retrieve %s" % e
         return output
+
+    # Check if user exists, if not, create a new one
+    checkAndCreateUser(login_session['username'])
+
     output = ''
     output += '<h3>Welcome, '
     output += login_session['username']
@@ -213,9 +229,63 @@ def gdisconnect():
     result = h.request(url, 'GET')[0]
     if result['status'] == '200':
         del login_session['access_token']
-        flash({"message": "Successfully disconnected.", "role": "success"})
+        if deleteUser(login_session['username']):
+            pass
+        else:
+            flash({"message": "DB Error, while disconnecting user.",
+                "role": "failure"})
         return redirect(url_for('main.showHome'))
     else:
         flash({'message': 'Failed to revoke token. Logout failed',
             'role': 'failure'})
         return redirect(url_for('main.showHome'))
+
+
+def createUser(login_session):
+    try:
+        newUser = User(email = login_session['username'],
+                       password = ''.join(random.choice(
+                        string.ascii_uppercase + string.digits)
+                       for x in range(16)),
+                       admin=False)
+        db.session.add(newUser)
+        db.session.commit()
+        user = User.query.filter_by(email = login_session['email']).one()
+        return user.id
+    except exc.SQLAlchemyError as e:
+        return None
+
+def getUserInfo(user_id):
+    try:
+        user = User.query.filter_by(id= user_id).one()
+        return user
+    except exc.SQLAlchemyError as e:
+        return None
+    except Exception as e:
+        return None
+
+def getUserID(username):
+    try:
+        user = User.query.filter_by(email= username).one()
+        return user.id
+    except:
+        return None
+
+def deleteUser(username):
+    try:
+        user = db.session.query(User).filter_by(email=username).delete()
+        db.session.commit()
+        return True
+    except:
+        return None
+
+def checkAndCreateUser(username):
+    try:
+        user_id = getUserID(login_session['username'])
+        if not user_id:
+            user_id = createUser(login_session)
+            login_session['user_id'] = user_id
+        login_user(getUserInfo(user_id))
+        return True
+    except Exception as e:
+        return False
