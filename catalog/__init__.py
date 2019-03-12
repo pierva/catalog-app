@@ -40,6 +40,10 @@ def load_user(user_id):
         return None
 
 # error handlers setup (use with abort(errCode))
+@app.errorhandler(401)
+def unauthorized_page(error):
+    return render_template("errors/401.html", user=current_user), 401
+    
 @app.errorhandler(403)
 def forbidden_page(error):
     return render_template("errors/403.html", user=current_user), 403
