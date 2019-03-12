@@ -7,7 +7,7 @@
   function start() {
     gapi.load('auth2', function() {
       auth2 = gapi.auth2.init({
-          client_id: 'your-client-id.apps.googleusercontent.com',
+          client_id: 'YOUR-CLIENT-ID.apps.googleusercontent.com',
       });
     });
   }
@@ -17,7 +17,7 @@
  {% block body %}
   <h5 class="text-center header">LOGIN PAGE</h5>
   <div class="mt-5">
-    <div class="" id="result"></div>
+    <div class="text-center" id="result"></div>
     <form class="login-container" action="{{url_for('user.login')}}" method="POST">
       <div>
         <label for="email">Email or Username</label>
@@ -64,10 +64,14 @@
 
 <div class="login-container">
 
-<button id="signinButton">Sign in with Google</button>
+<div id="signinButton">
+    <img src="{{url_for('static', filename='img/btn_google.png')}}"
+      alt="Google Sign In Button">
+  </div>
 </div>
 
 {% endblock %}
+
 {% block script %}
   <script src="{{url_for('static', filename='js/login.js')}}"></script>
   <script>
@@ -89,11 +93,14 @@
             processData: false,
             data: authResult['code'],
             success: function(result) {
-              $("#result").html(result);
+              $("#result").html(result + '<br>Redirecting...');
+              setTimeout(function() {
+               window.location.href = "{{url_for('main.showHome')}}";
+              }, 2000);
             }
           });
         } else {
-          console.log('Error');
+          $("#result").text('An error occurred while processing your request.')
         }
       }
     });

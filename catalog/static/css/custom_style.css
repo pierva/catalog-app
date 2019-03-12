@@ -146,7 +146,7 @@ legend{
   border: 1px solid rgba(22, 22, 22, 0.2);
   border-radius: 5px;
   box-shadow: 0 0px 7px 0 rgba(0, 0, 0, 0.5);
-  padding: 2rem;
+  padding: 1.5rem;
 }
 
 .google-login{
@@ -205,6 +205,15 @@ legend{
 #deleteModal .modal-header .close{
   background-color: rgb(176, 9, 9);
   color: rgb(255, 255, 255);
+}
+
+#signinButton img {
+  display: block;
+  margin: auto;
+}
+
+#signinButton img:hover{
+  cursor: pointer;
 }
 
 @media (max-width: 576px){
