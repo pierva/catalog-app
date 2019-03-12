@@ -198,3 +198,24 @@ def gconnect():
     flash({'message': 'You are now logged in as {}'.format(
         login_session['username']), 'role': 'success'})
     return output
+
+
+@user_blueprint.route('/gdisconnect')
+def gdisconnect():
+    access_token = login_session.get('access_token')
+    if access_token is None:
+        response = make_response(json.dumps('Current user not connected.'), 401)
+        response.headers['Content-Type'] = 'application/json'
+        return response
+    url = 'https://accounts.google.com/o/oauth2/revoke?token={}'.format(
+        login_session['access_token'])
+    h = httplib2.Http()
+    result = h.request(url, 'GET')[0]
+    if result['status'] == '200':
+        del login_session['access_token']
+        flash({"message": "Successfully disconnected.", "role": "success"})
+        return redirect(url_for('main.showHome'))
+    else:
+        flash({'message': 'Failed to revoke token. Logout failed',
+            'role': 'failure'})
+        return redirect(url_for('main.showHome'))
