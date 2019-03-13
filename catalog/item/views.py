@@ -10,6 +10,15 @@ from flask_login import current_user, login_required
 item_blueprint = Blueprint('item', __name__,)
 
 
+@item_blueprint.route("/catalog/api/v1/all/JSON")
+def getItemsJSON():
+    try:
+        items = Item.query.all()
+        return jsonify(Items=[i.serialize_item for i in items])
+    except Exception as e:
+        return jsonify({"status": 500, "message": "Server error", "e": e.message})
+
+
 @item_blueprint.route("/catalog/<categoryName>/new", methods=['GET', 'POST'])
 @login_required
 def addCategoryItem(categoryName):
