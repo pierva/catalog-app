@@ -9,6 +9,15 @@ from flask_login import login_required, current_user
 category_blueprint = Blueprint('category', __name__,)
 
 
+@category_blueprint.route("/catalog/api/v1/categories/JSON")
+def getAllCategories():
+    try:
+        categories = Category.query.all()
+        return jsonify(Categories=[c.serialize_category for c in categories])
+    except Exception as e:
+        return jsonify({"status": 500, "message": "Server error", "e": e.message})
+
+
 @category_blueprint.route("/catalog/<categoryName>")
 @category_blueprint.route("/catalog/<categoryName>/items")
 def getCategoryItems(categoryName):
