@@ -1,4 +1,5 @@
 {% extends 'base.html'%}
+
 {% block head %}
 <script src="{{url_for('static', filename = 'js/lib/jquery-3.3.1.js')}}"></script>
 <script src="https://apis.google.com/js/client:platform.js?onload=start" async defer>
@@ -7,7 +8,7 @@
   function start() {
     gapi.load('auth2', function() {
       auth2 = gapi.auth2.init({
-          client_id: '235275093564-fqtgv22sh0m7l5f793at5p9nn7ql13bc.apps.googleusercontent.com',
+          client_id: 'YOUR-CLIENT-ID.apps.googleusercontent.com',
       });
     });
   }
@@ -18,7 +19,8 @@
   <h5 class="text-center header">LOGIN PAGE</h5>
   <div class="mt-5">
     <div class="text-center" id="result"></div>
-    <form class="login-container" action="{{url_for('user.login')}}" method="POST">
+    <form class="login-container" action="{{url_for('user.login')}}"
+      method="POST">
       <div>
         <label for="email">Email or Username</label>
         {{ form.email(placeholder="email or username", class="form-control",
@@ -73,7 +75,6 @@
 {% endblock %}
 
 {% block script %}
-  <script src="{{url_for('static', filename='js/login.js')}}"></script>
   <script>
     $(function() {
       $('#signinButton').on('click', function() {
@@ -82,7 +83,6 @@
 
       function signInCallback(authResult) {
         if (authResult['code']) {
-          // Send the one-time-use code to the server, if the server responds, write a 'login successful' message to the web page and then redirect back to the main restaurants page
           $.ajax({
             type: 'POST',
             url: '/gconnect?state={{STATE}}',

@@ -15,11 +15,14 @@
             {% for category in categories %}
             <div class="d-inline-flex w-100 controls">
               <div class="metal linear float-left w-100">
-                <span class="category-name" data-category-id="{{category.id}}">{{category.name}}</span>
+                <span class="category-name" data-category-id="{{category.id}}">
+                    {{category.name}}
+                </span>
               </div>
 
               {% if user.id == category.user_id or user.admin %}
-                <div class="float-left delete" data-toggle='modal' data-target='#deleteModal'>
+                <div class="float-left delete" data-toggle='modal'
+                  data-target='#deleteModal'>
                   <a href="#">
                     <div class="">
                       <button type="submit" name="button"
@@ -30,7 +33,8 @@
                   </a>
                 </div>
 
-                <div class="float-left edit" data-toggle='modal' data-target='#editModal'>
+                <div class="float-left edit" data-toggle='modal'
+                  data-target='#editModal'>
                   <a href="#">
                     <div class="">
                       <button type="submit" name="button"
@@ -42,7 +46,8 @@
                 </div>
 
                 <div class="float-left new-item">
-                  <a href="{{url_for('item.addCategoryItem', categoryName=category.name)}}">
+                  <a href="{{url_for('item.addCategoryItem',
+                                     categoryName=category.name)}}">
                     <div class="">
                       <button type="submit" name="button"
                         class="btn btn-lg form-control btn-outline-primary">
@@ -73,17 +78,19 @@
                   </span>
                   <div data-item-name="{{item.name}}">
                     <button type="submit" name="button"  data-toggle='modal'
-                      data-target='#previewModal' class="btn btn-sm btn-outline-primary">
+                      data-target='#previewModal'
+                      class="btn btn-sm btn-outline-primary">
                       <span class="fas fa-eye"></span>
                     </button>
                     {% if user.id == item.user_id or user.admin %}
                       <a href="{{url_for('item.editCategoryItem',
-                        categoryName = item.category_name, itemName = item.name)}}"
+                        categoryName = item.category_name, itemName=item.name)}}"
                         class="btn btn-sm btn-outline-warning">
                         <span class="fas fa-edit"></span>
                       </a>
                       <button type="submit" name="button"  data-toggle='modal'
-                        data-target='#deleteModal' class="btn btn-sm btn-outline-danger">
+                        data-target='#deleteModal'
+                        class="btn btn-sm btn-outline-danger">
                         <span class="fas fa-trash-alt"></span>
                       </button>
                     {% endif %}
