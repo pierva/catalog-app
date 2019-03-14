@@ -15,7 +15,8 @@ def getAllCategories():
         categories = Category.query.all()
         return jsonify(Categories=[c.serialize_category for c in categories])
     except Exception as e:
-        return jsonify({"status": 500, "message": "Server error", "e": e.message})
+        return jsonify({"status": 500, "message": "Server error",
+            "error": e})
 
 
 @category_blueprint.route("/catalog/<categoryName>")
