@@ -16,7 +16,28 @@ def getItemsJSON():
         items = Item.query.all()
         return jsonify(Items=[i.serialize_item for i in items])
     except Exception as e:
-        return jsonify({"status": 500, "message": "Server error", "e": e.message})
+        return jsonify({"status": 500, "message": "Server error",
+        "error": e})
+
+
+@item_blueprint.route("/catalog/api/v1/item/<int:itemId>/JSON")
+def getSingleItemJSON(itemId):
+    try:
+        item = Item.query.filter_by(id=itemId).one()
+        return jsonify(item.serialize_item)
+    except Exception as e:
+        return jsonify({"status": 500, "message": "Server error",
+        "error": e})
+
+
+@item_blueprint.route("/catalog/api/v1/items/<categoryName>/JSON")
+def getCategoryItemsJSON(categoryName):
+    try:
+        items = Item.query.filter_by(category_name=categoryName).all()
+        return jsonify(Items=[i.serialize_item for i in items])
+    except Exception as e:
+        return jsonify({"status": 500, "message": "Server error",
+        "error": e})
 
 
 @item_blueprint.route("/catalog/<categoryName>/new", methods=['GET', 'POST'])
