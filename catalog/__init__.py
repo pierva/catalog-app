@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import os
 import requests
 from flask import (Flask, request, url_for, flash, render_template,
