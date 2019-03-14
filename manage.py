@@ -16,9 +16,8 @@ manager = Manager(app)
 
 # migrations
 manager.add_command('db', MigrateCommand)
-
-
 manager.add_command('runserver', Server(host='0.0.0.0', port=5000))
+
 
 @manager.command
 def create_db():
@@ -36,9 +35,9 @@ def drop_db():
 def create_user():
     """Creates the admin user."""
     db.session.add(User(
-        email="pvignola@carnival.com",
-        password="Pierva1234",
-        admin= True
+        email="example@email.com",
+        password="Admin1234",
+        admin=True
         )
     )
     db.session.commit()

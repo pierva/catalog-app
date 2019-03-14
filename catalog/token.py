@@ -16,6 +16,6 @@ def confirm_token(token, expiration=1200):
             salt=app.config['SECURITY_PASSWORD_SALT'],
             max_age=expiration
         )
-    except:
+    except Exception as e:
         return False
     return email

@@ -17,7 +17,7 @@ def getItemsJSON():
         return jsonify(Items=[i.serialize_item for i in items])
     except Exception as e:
         return jsonify({"status": 500, "message": "Server error",
-        "error": e})
+                        "error": e})
 
 
 @item_blueprint.route("/catalog/api/v1/item/<int:itemId>/JSON")
@@ -27,7 +27,7 @@ def getSingleItemJSON(itemId):
         return jsonify(item.serialize_item)
     except Exception as e:
         return jsonify({"status": 500, "message": "Server error",
-        "error": e})
+                        "error": e})
 
 
 @item_blueprint.route("/catalog/api/v1/items/<categoryName>/JSON")
@@ -37,33 +37,33 @@ def getCategoryItemsJSON(categoryName):
         return jsonify(Items=[i.serialize_item for i in items])
     except Exception as e:
         return jsonify({"status": 500, "message": "Server error",
-        "error": e})
+                        "error": e})
 
 
 @item_blueprint.route("/catalog/<categoryName>/new", methods=['GET', 'POST'])
 @login_required
 def addCategoryItem(categoryName):
     try:
-        category = Category.query.filter_by(name = categoryName).one()
+        category = Category.query.filter_by(name=categoryName).one()
         if current_user.id == category.user_id or current_user.admin:
             if request.method == 'GET':
                 return render_template('new_item.html', category=category,
-                                        user=current_user)
+                                       user=current_user)
             elif request.method == 'POST':
                 newItem = Item(
-                    name = request.form['name'],
-                    picture = request.form['picture'],
-                    description = request.form['description'],
-                    category_id = category.id,
-                    category_name = category.name,
-                    user_id = current_user.id
-                )
+                    name=request.form['name'],
+                    picture=request.form['picture'],
+                    description=request.form['description'],
+                    category_id=category.id,
+                    category_name=category.name,
+                    user_id=current_user.id
+                    )
                 db.session.add(newItem)
                 db.session.commit()
                 flash({
                     "message": "New item successfully created.",
                     "role": "success"
-                })
+                    })
                 return redirect(url_for('main.showHome'))
         else:
             return handleUnauthorized()
@@ -81,7 +81,7 @@ def addCategoryItem(categoryName):
 def getItem(categoryName, itemName):
     try:
         item = Item.query.filter(Item.name == itemName,
-            Item.category_name == categoryName).one()
+                                 Item.category_name == categoryName).one()
         return jsonify(item.serialize_item)
     except exc.SQLAlchemyError as e:
         return jsonify({
@@ -99,7 +99,7 @@ def getItem(categoryName, itemName):
 def editCategoryItem(categoryName, itemName):
     try:
         item = Item.query.filter(Item.name == itemName,
-            Item.category_name == categoryName).one()
+                                 Item.category_name == categoryName).one()
         if current_user.id == item.user_id or current_user.admin:
             if request.method == 'GET':
                 return render_template('edit_item.html', item=item,
@@ -129,10 +129,11 @@ def editCategoryItem(categoryName, itemName):
 def deleteCategoryItem(categoryName, itemName):
     try:
         item = Item.query.filter(Item.name == itemName,
-            Item.category_name == categoryName).one()
+                                 Item.category_name == categoryName).one()
         if current_user.id == item.user_id or current_user.admin:
             if request.method == 'GET':
-                return jsonify({"name": item.name, "category": item.category_name})
+                return jsonify({"name": item.name,
+                                "category": item.category_name})
             elif request.method == 'POST':
                 db.session.delete(item)
                 db.session.commit()
@@ -154,9 +155,10 @@ def deleteCategoryItem(categoryName, itemName):
 
 
 def handleUnauthorized():
-    flash({'message': "You're not allowed to perfor this action. " +
-                "please login with the account used to create " +
-                "this category or with an admin account.",
-           'role': 'failure'
-          })
+    flash({
+        'message': "You're not allowed to perfor this action. " +
+                   "please login with the account used to create " +
+                   "this category or with an admin account.",
+        'role': 'failure'
+         })
     return redirect(url_for('main.showHome'))

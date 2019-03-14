@@ -1,4 +1,4 @@
-#catalog/user/views.py
+# catalog/user/views.py
 import os
 import requests
 from flask import (render_template, Blueprint, url_for,
@@ -14,7 +14,8 @@ from .forms import LoginForm, RegisterForm
 from sqlalchemy import exc
 from sqlalchemy.orm import sessionmaker
 
-import random, string
+import random
+import string
 
 # Google oauth2 libraries
 from oauth2client.client import flow_from_clientsecrets
@@ -32,17 +33,17 @@ user_blueprint = Blueprint('user', __name__,)
 def login():
     form = LoginForm(request.form)
     state = ''.join(random.choice(string.ascii_uppercase + string.digits)
-    for x in range(32))
+                    for x in range(32))
     login_session['state'] = state
     if request.method == 'GET':
         return render_template('user/login.html', form=form,
-            user=current_user, STATE=state)
+                               user=current_user, STATE=state)
     elif request.method == 'POST':
         if form.validate_on_submit():
             try:
                 user = User.query.filter_by(email=form.email.data).first()
-                if user and bcrypt.check_password_hash(
-                    user.password, form.password.data):
+                if user and bcrypt.check_password_hash(user.password,
+                                                       form.password.data):
                     login_user(user)
                     flash({'message': 'Welcome {}.'.format(user.email),
                            'role': 'success'})
@@ -51,13 +52,13 @@ def login():
                     flash({'message': 'Invalid email and/or password.',
                            'role': 'failure'})
                     return render_template('user/login.html', form=form,
-                                            user=current_user, STATE=state)
+                                           user=current_user, STATE=state)
             except exc.SQLAlchemyError as e:
                 flash({'message':
-                        'Something went wrong while processing your request',
+                       'Something went wrong while processing your request',
                        'role': 'failure'})
                 return render_template('user/login.html', form=form,
-                                        user=current_user, STATE=state)
+                                       user=current_user, STATE=state)
 
 
 @user_blueprint.route('/register', methods=['GET', 'POST'])
@@ -83,16 +84,16 @@ def register():
                 return redirect(url_for("main.showHome"))
             except exc.SQLAlchemyError as e:
                 flash({'message':
-                        'Unexpected database error while processing ' +
-                        'your request.',
+                       'Unexpected database error while processing ' +
+                       'your request.',
                        'role': 'failure'})
                 return render_template('user/register.html', form=form,
-                                        user=current_user)
+                                       user=current_user)
             except Exception as e:
                 flash({'message': e, 'role': 'failure'})
-                return abort(500);
+                return abort(500)
         return render_template('user/register.html', form=form,
-                                user=current_user)
+                               user=current_user)
 
 
 @user_blueprint.route('/logout')
@@ -122,10 +123,10 @@ def logout():
 
 @user_blueprint.route('/gconnect', methods=['POST'])
 def gconnect():
-    basedir = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..',
-        'instance'))
+    basedir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..',
+                              'instance'))
     CLIENT_ID = json.loads(
-    open(basedir + '/g_client_secrets.json', 'r').read())['web']['client_id']
+        open(basedir+'/g_client_secrets.json', 'r').read())['web']['client_id']
     if request.args.get('state') != login_session['state']:
         response = make_response(json.dumps('Invalid state parameter.'), 401)
         response.headers['Content-Type'] = 'application/json'
@@ -134,8 +135,8 @@ def gconnect():
     code = request.data
     try:
         # Upgrade the authorization code into a credentials object
-        oauth_flow = flow_from_clientsecrets(basedir + '/g_client_secrets.json',
-            scope='')
+        oauth_flow = flow_from_clientsecrets(basedir+'/g_client_secrets.json',
+                                             scope='')
         oauth_flow.redirect_uri = 'postmessage'
         credentials = oauth_flow.step2_exchange(code)
     except FlowExchangeError:
@@ -144,20 +145,20 @@ def gconnect():
         response.headers['Content-Type'] = 'application/json'
         return response
 
-        # Check that the access token is valid.
+    # Check that the access token is valid.
     access_token = credentials.access_token
     url = ('https://www.googleapis.com/oauth2/v1/tokeninfo?access_token={}'.
-        format(access_token))
+           format(access_token))
     h = httplib2.Http()
     result = json.loads(h.request(url, 'GET')[1].decode('utf-8'))
 
-        # If there was an error in the access token info, abort.
+    # If there was an error in the access token info, abort.
     if result.get('error') is not None:
         response = make_response(json.dumps(result.get('error')), 500)
         response.headers['Content-Type'] = 'application/json'
         return response
 
-        # Verify that the access token is used for the intended user.
+    # Verify that the access token is used for the intended user.
     gplus_id = credentials.id_token['sub']
     if result['user_id'] != gplus_id:
         response = make_response(
@@ -176,7 +177,7 @@ def gconnect():
     stored_gplus_id = login_session.get('gplus_id')
     if stored_access_token is not None and gplus_id == stored_gplus_id:
         response = make_response(
-            json.dumps('Current user is already connected.'),200)
+            json.dumps('Current user is already connected.'), 200)
         response.headers['Content-Type'] = 'application/json'
         checkAndCreateUser(login_session)
         return response
@@ -198,7 +199,8 @@ def gconnect():
         login_session['provider'] = 'google'
     except KeyError as e:
         output = ''
-        output += "Something wrong with your account. Unable to retrieve %s" %e
+        output += "Something wrong with your account. "
+        output += "Unable to retrieve {}".format(e)
         return output
 
     # Check if user exists, if not, create a new one
@@ -220,7 +222,8 @@ def gconnect():
 def gdisconnect():
     access_token = login_session.get('access_token')
     if access_token is None:
-        response = make_response(json.dumps('Current user not connected.'), 401)
+        response = make_response(json.dumps(
+            'Current user not connected.'), 401)
         response.headers['Content-Type'] = 'application/json'
         return response
     url = 'https://accounts.google.com/o/oauth2/revoke?token={}'.format(
@@ -233,23 +236,23 @@ def gdisconnect():
             deleteUser(login_session['username'])
         except exc.SQLAlchemyError as e:
             flash({'message':
-                    'Unexpected database error while processing ' +
-                    'your request.',
+                   'Unexpected database error while processing ' +
+                   'your request.',
                    'role': 'failure'})
         return redirect(url_for('main.showHome'))
     else:
         flash({'message': 'Failed to revoke token. Logout failed',
-            'role': 'failure'})
+               'role': 'failure'})
         return redirect(url_for('main.showHome'))
 
 
 def createUser(login_session):
     try:
-        newUser = User(email = login_session['email'],
-                       username = login_session['username'],
-                       password = ''.join(random.choice(
-                        string.ascii_uppercase + string.digits)
-                       for x in range(16)),
+        newUser = User(email=login_session['email'],
+                       username=login_session['username'],
+                       password=''.join(random.choice(
+                                        string.ascii_uppercase + string.digits)
+                                        for x in range(16)),
                        admin=False)
         db.session.add(newUser)
         db.session.commit()
@@ -258,29 +261,33 @@ def createUser(login_session):
     except exc.SQLAlchemyError as e:
         return None
 
+
 def getUserInfo(user_id):
     try:
-        user = User.query.filter_by(id= user_id).one()
+        user = User.query.filter_by(id=user_id).one()
         return user
     except exc.SQLAlchemyError as e:
         return None
     except Exception as e:
         return None
 
+
 def getUserID(email):
     try:
-        user = User.query.filter_by(email= email).one()
+        user = User.query.filter_by(email=email).one()
         return user.id
-    except:
+    except Exception as e:
         return None
+
 
 def deleteUser(username):
     try:
         user = db.session.query(User).filter_by(username=username).delete()
         db.session.commit()
         return True
-    except:
+    except Exception as e:
         return None
+
 
 def checkAndCreateUser(login_session):
     try:

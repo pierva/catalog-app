@@ -1,6 +1,6 @@
 # catalog/category/views.py
 from flask import (render_template, Blueprint, request, flash,
-    redirect, url_for, jsonify)
+                   redirect, url_for, jsonify)
 from catalog.models import Category, Item
 from sqlalchemy import exc
 from catalog import db
@@ -17,7 +17,7 @@ def getAllCategories():
         return jsonify(Categories=[c.serialize_category for c in categories])
     except Exception as e:
         return jsonify({"status": 500, "message": "Server error",
-            "error": e})
+                        "error": e})
 
 
 @category_blueprint.route("/catalog/<categoryName>")
@@ -26,7 +26,7 @@ def getCategoryItems(categoryName):
     try:
         items = Item.query.filter_by(category_name=categoryName).all()
         return render_template("partials/items-list.html", items=items,
-                                user=current_user)
+                               user=current_user)
     except exc.SQLAlchemyError as e:
         flash({
             "message": "No category was found.",
@@ -49,8 +49,8 @@ def newCategory():
         return render_template('new_category.html')
     elif request.method == 'POST':
         try:
-            newCategory = Category(name = request.form['name'],
-                user_id=current_user.id)
+            newCategory = Category(name=request.form['name'],
+                                   user_id=current_user.id)
             db.session.add(newCategory)
             db.session.commit()
             flash({
@@ -68,13 +68,12 @@ def newCategory():
             return redirect('/')
 
 
-@category_blueprint.route("/catalog/<int:id>/edit", methods=['GET','POST'])
+@category_blueprint.route("/catalog/<int:id>/edit", methods=['GET', 'POST'])
 @login_required
 def editCategory(id):
     try:
         category = Category.query.filter_by(id=id).one()
         if current_user.id == category.user_id or current_user.admin:
-            print('good to go')
             if request.method == 'POST':
                 category.name = request.form['name']
                 category.user_id = current_user.id
@@ -126,10 +125,12 @@ def deleteCategory(id):
              })
         return redirect(url_for('main.showHome'))
 
+
 def handleUnauthorized():
-    flash({'message': "You're not allowed to perfor this action. " +
-                "please login with the account used to create " +
-                "this category or with an admin account.",
-           'role': 'failure'
+    flash({
+        'message': "You're not allowed to perfor this action. " +
+                   "please login with the account used to create " +
+                   "this category or with an admin account.",
+        'role': 'failure'
           })
     return redirect(url_for('main.showHome'))

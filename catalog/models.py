@@ -1,4 +1,5 @@
-import random, string
+import random
+import string
 import datetime
 
 from catalog import db, bcrypt
@@ -12,8 +13,6 @@ class User(db.Model):
     password = db.Column(db.String(64), nullable=False)
     registered_on = db.Column(db.DateTime, nullable=False)
     admin = db.Column(db.Boolean, nullable=False, default=False)
-
-    # categories = db.relationship("Category")
 
     def __init__(self, email, password, admin, username=""):
         self.email = email
