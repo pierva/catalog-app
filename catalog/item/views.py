@@ -45,7 +45,7 @@ def getCategoryItemsJSON(categoryName):
 def addCategoryItem(categoryName):
     try:
         category = Category.query.filter_by(name = categoryName).one()
-        if current_user.id == category.user_id:
+        if current_user.id == category.user_id or current_user.admin:
             if request.method == 'GET':
                 return render_template('new_item.html', category=category,
                                         user=current_user)
@@ -100,7 +100,7 @@ def editCategoryItem(categoryName, itemName):
     try:
         item = Item.query.filter(Item.name == itemName,
             Item.category_name == categoryName).one()
-        if current_user.id == item.user_id:
+        if current_user.id == item.user_id or current_user.admin:
             if request.method == 'GET':
                 return render_template('edit_item.html', item=item,
                                        user=current_user)
@@ -130,7 +130,7 @@ def deleteCategoryItem(categoryName, itemName):
     try:
         item = Item.query.filter(Item.name == itemName,
             Item.category_name == categoryName).one()
-        if current_user.id == item.user_id:
+        if current_user.id == item.user_id or current_user.admin:
             if request.method == 'GET':
                 return jsonify({"name": item.name, "category": item.category_name})
             elif request.method == 'POST':

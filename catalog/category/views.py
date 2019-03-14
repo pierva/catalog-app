@@ -1,5 +1,6 @@
 # catalog/category/views.py
-from flask import render_template, Blueprint, request, flash, redirect, url_for, jsonify
+from flask import (render_template, Blueprint, request, flash,
+    redirect, url_for, jsonify)
 from catalog.models import Category, Item
 from sqlalchemy import exc
 from catalog import db
@@ -72,7 +73,8 @@ def newCategory():
 def editCategory(id):
     try:
         category = Category.query.filter_by(id=id).one()
-        if current_user.id == category.user_id:
+        if current_user.id == category.user_id or current_user.admin:
+            print('good to go')
             if request.method == 'POST':
                 category.name = request.form['name']
                 category.user_id = current_user.id
@@ -102,7 +104,7 @@ def editCategory(id):
 def deleteCategory(id):
     try:
         category = Category.query.filter_by(id=id).first()
-        if current_user.id == category.user_id:
+        if current_user.id == category.user_id or current_user.admin:
             if request.method == 'GET':
                 return jsonify(category.serialize_category)
             elif request.method == 'POST':
