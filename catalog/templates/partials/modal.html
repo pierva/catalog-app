@@ -1,14 +1,17 @@
 <!-- Modal -->
-<div class="modal fade" id="categoryModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+<div class="modal fade" id="categoryModal" tabindex="-1" role="dialog"
+  aria-labelledby="ModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="ModalLabel">Add New Category</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button type="button" class="close" data-dismiss="modal"
+          aria-label="Close">
           <span class="close" aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form class="" action="{{url_for('category.newCategory')}}" method="post">
+      <form class="" action="{{url_for('category.newCategory')}}"
+        method="post">
         <div class="modal-body">
           <div class="form-group">
             <label for="name">Categoy Name</label>
@@ -16,7 +19,8 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-secondary"
+            data-dismiss="modal">Close</button>
           <button type="submit" class="btn btn-primary">
             Add Category <span class="fas fa-plus"></span>
           </button>
