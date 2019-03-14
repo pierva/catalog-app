@@ -178,7 +178,7 @@ def gconnect():
         response = make_response(
             json.dumps('Current user is already connected.'),200)
         response.headers['Content-Type'] = 'application/json'
-        checkAndCreateUser(login_session['username'])
+        checkAndCreateUser(login_session)
         return response
 
     # Store the access token in the session for later use.
@@ -202,7 +202,7 @@ def gconnect():
         return output
 
     # Check if user exists, if not, create a new one
-    checkAndCreateUser(login_session['username'])
+    checkAndCreateUser(login_session)
 
     output = ''
     output += '<h3>Welcome, '
@@ -229,11 +229,13 @@ def gdisconnect():
     result = h.request(url, 'GET')[0]
     if result['status'] == '200':
         del login_session['access_token']
-        if deleteUser(login_session['username']):
-            pass
-        else:
-            flash({"message": "DB Error, while disconnecting user.",
-                "role": "failure"})
+        try:
+            deleteUser(login_session['username'])
+        except exc.SQLAlchemyError as e:
+            flash({'message':
+                    'Unexpected database error while processing ' +
+                    'your request.',
+                   'role': 'failure'})
         return redirect(url_for('main.showHome'))
     else:
         flash({'message': 'Failed to revoke token. Logout failed',
@@ -243,14 +245,15 @@ def gdisconnect():
 
 def createUser(login_session):
     try:
-        newUser = User(email = login_session['username'],
+        newUser = User(email = login_session['email'],
+                       username = login_session['username'],
                        password = ''.join(random.choice(
                         string.ascii_uppercase + string.digits)
                        for x in range(16)),
                        admin=False)
         db.session.add(newUser)
         db.session.commit()
-        user = User.query.filter_by(email=login_session['username']).one()
+        user = User.query.filter_by(email=login_session['email']).one()
         return user.id
     except exc.SQLAlchemyError as e:
         return None
@@ -264,24 +267,24 @@ def getUserInfo(user_id):
     except Exception as e:
         return None
 
-def getUserID(username):
+def getUserID(email):
     try:
-        user = User.query.filter_by(email= username).one()
+        user = User.query.filter_by(email= email).one()
         return user.id
     except:
         return None
 
 def deleteUser(username):
     try:
-        user = db.session.query(User).filter_by(email=username).delete()
+        user = db.session.query(User).filter_by(username=username).delete()
         db.session.commit()
         return True
     except:
         return None
 
-def checkAndCreateUser(username):
+def checkAndCreateUser(login_session):
     try:
-        user_id = getUserID(login_session['username'])
+        user_id = getUserID(login_session['email'])
         if not user_id:
             user_id = createUser(login_session)
             login_session['user_id'] = user_id

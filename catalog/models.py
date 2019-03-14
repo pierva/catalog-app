@@ -8,17 +8,19 @@ class User(db.Model):
     __tablename__ = 'user'
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String, nullable=False, index=True, unique=True)
+    username = db.Column(db.String, nullable=True)
     password = db.Column(db.String(64), nullable=False)
     registered_on = db.Column(db.DateTime, nullable=False)
     admin = db.Column(db.Boolean, nullable=False, default=False)
 
     # categories = db.relationship("Category")
 
-    def __init__(self, email, password, admin):
+    def __init__(self, email, password, admin, username=""):
         self.email = email
         self.password = bcrypt.generate_password_hash(password)
         self.registered_on = datetime.datetime.now()
         self.admin = admin
+        self.username = username
 
     def is_authenticated(self):
         return True
