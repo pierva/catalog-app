@@ -3,7 +3,7 @@
 ## Get Started
 Clone or download the repository, then navigate into the application folder.
 
-Create and activate a virtualenv. If using virtual machine with vagrant (suggested), jump to the next step:
+Create and activate a virtualenv. The application is designed and tested in Python3. If using virtual machine with vagrant (suggested), jump to the next step:
 ```sh
 $ python3.6 -m venv env
 $ source env/bin/activate
@@ -102,7 +102,7 @@ $ python3 manage.py create_user
 ### Run the application
 
 ```sh
-$ python manage.py runserver
+$ python3 manage.py runserver
 ```
 
 The application in the home page shows a list of categories on the left and by default after opening, the list of recently added items (7) on the right.
@@ -137,7 +137,9 @@ The routes are also protected in case the CRUD operations are made from outside 
 ### !!! DELETING A CATEGORY !!!
 When deleting a category, all the items associated with that category will be deleted as well.
 
-### API Endpoints (GET method)
+______
+
+## API Endpoints (GET method)
 
 Get all the items in the database:
 
