@@ -247,6 +247,16 @@ If the category name doesn't exists, or it doesn't contain any item, it will be 
 }
 ```
 
+______
+## Features to be added
+For a better user experience it will be necessary to add the following features to the application:
+
+* Users management page (i.e. Delete Users)
+* Password change page
+* Password reset page with emailed token (include SMTP)
+* Enable POST/PUT/DELETE operations through API for authenticated users
+
+
 ## CatalogApp screenshots
 
 #### Home Page without logged in user
