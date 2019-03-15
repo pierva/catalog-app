@@ -41,24 +41,25 @@ To enable Google Login:
 The content of the file should look similar to this:
 
 ```
-{"web":
-  {
-    "client_id": "YOUR-ID.apps.googleusercontent.com",
-    "project_id": "your-app-name",
-    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-    "token_uri": "https://oauth2.googleapis.com/token",
-    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-    "client_secret": "YOUR-SECRET",
-    "redirect_uris": [
-        "http://localhost:5000/gCallback",
-        "https://localhost:5000/gCallback",
-        "http://localhost:5000/catalog"
-        ],
-    "javascript_origins": [
-      "http://localhost:5000",
-      "https://localhost:5000"
-      ]
-  }
+{
+  "web":
+    {
+      "client_id": "YOUR-ID.apps.googleusercontent.com",
+      "project_id": "your-app-name",
+      "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+      "token_uri": "https://oauth2.googleapis.com/token",
+      "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+      "client_secret": "YOUR-SECRET",
+      "redirect_uris": [
+          "http://localhost:5000/gCallback",
+          "https://localhost:5000/gCallback",
+          "http://localhost:5000/catalog"
+          ],
+      "javascript_origins": [
+        "http://localhost:5000",
+        "https://localhost:5000"
+        ]
+    }
 }
 ```
 
