@@ -21,10 +21,17 @@ def getItemsJSON():
 
 
 @item_blueprint.route("/catalog/api/v1/item/<int:itemId>/JSON")
-def getSingleItemJSON(itemId):
+@item_blueprint.route("/catalog/api/v1/item/<itemName>/JSON")
+def getSingleItemJSON(itemId=None, itemName=""):
     try:
-        item = Item.query.filter_by(id=itemId).one()
-        return jsonify(item.serialize_item)
+        if itemId:
+            item = Item.query.filter_by(id=itemId).first()
+        elif itemName:
+            item = Item.query.filter(Item.name.like(itemName)).first()
+        if item:
+            return jsonify(item.serialize_item)
+        else:
+            return jsonify({"status": 404, "message": "No item found"})
     except Exception as e:
         return jsonify({"status": 500, "message": "Server error",
                         "error": e})
@@ -44,7 +51,7 @@ def getCategoryItemsJSON(categoryName):
 @login_required
 def addCategoryItem(categoryName):
     try:
-        category = Category.query.filter_by(name=categoryName).one()
+        category = Category.query.filter_by(name=categoryName).first()
         if current_user.id == category.user_id or current_user.admin:
             if request.method == 'GET':
                 return render_template('new_item.html', category=category,
@@ -81,7 +88,7 @@ def addCategoryItem(categoryName):
 def getItem(categoryName, itemName):
     try:
         item = Item.query.filter(Item.name == itemName,
-                                 Item.category_name == categoryName).one()
+                                 Item.category_name == categoryName).first()
         return jsonify(item.serialize_item)
     except exc.SQLAlchemyError as e:
         return jsonify({
@@ -99,7 +106,7 @@ def getItem(categoryName, itemName):
 def editCategoryItem(categoryName, itemName):
     try:
         item = Item.query.filter(Item.name == itemName,
-                                 Item.category_name == categoryName).one()
+                                 Item.category_name == categoryName).first()
         if current_user.id == item.user_id or current_user.admin:
             if request.method == 'GET':
                 return render_template('edit_item.html', item=item,
@@ -129,7 +136,7 @@ def editCategoryItem(categoryName, itemName):
 def deleteCategoryItem(categoryName, itemName):
     try:
         item = Item.query.filter(Item.name == itemName,
-                                 Item.category_name == categoryName).one()
+                                 Item.category_name == categoryName).first()
         if current_user.id == item.user_id or current_user.admin:
             if request.method == 'GET':
                 return jsonify({"name": item.name,
