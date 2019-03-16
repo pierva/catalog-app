@@ -33,10 +33,13 @@ $ mkdir instance
 ```
 
 To enable Google Login:
-- create the credentials in the [developer console](https://console.developers.google.com) (make sure to have the proper redirect URIs and javascript origins).
-- Download the json file
-- Rename it as `g_client_secrets.json`
-- Move the file inside the `instance` folder previously created
+1. Create the credentials in the [developer console](https://console.developers.google.com) (make sure to have the proper redirect URIs and javascript origins).
+
+2. Download the json file
+
+3. Rename it as `g_client_secrets.json`
+
+4. Move the file inside the `instance` folder previously created
 
 The content of the file should look similar to this:
 
@@ -249,7 +252,7 @@ If the category name doesn't exists, or it doesn't contain any item, it will be 
 
 ______
 ## Features to be added
-For a better user experience it will be necessary to add the following features to the application:
+For a **better user experience** it will be necessary to add the following features to the application:
 
 * Users management page (i.e. Delete Users)
 * Password change page
