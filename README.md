@@ -43,7 +43,7 @@ To enable Google Login:
 
 The content of the file should look similar to this:
 
-```
+```javascript
 {
   "web":
     {
