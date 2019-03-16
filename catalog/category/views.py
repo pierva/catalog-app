@@ -49,14 +49,20 @@ def newCategory():
         return render_template('new_category.html')
     elif request.method == 'POST':
         try:
-            newCategory = Category(name=request.form['name'],
-                                   user_id=current_user.id)
-            db.session.add(newCategory)
-            db.session.commit()
-            flash({
-                "message": "Category successfully added!",
-                "role": "success"
-                 })
+            if request.form['name']:
+                newCategory = Category(name=request.form['name'],
+                                       user_id=current_user.id)
+                db.session.add(newCategory)
+                db.session.commit()
+                flash({
+                    "message": "Category successfully added!",
+                    "role": "success"
+                     })
+            else:
+                flash({
+                    "message": "Category name cannot be empty!",
+                    "role": "failure"
+                     })
             return redirect(url_for('main.showHome'))
         except exc.SQLAlchemyError as e:
             flash({
@@ -75,14 +81,20 @@ def editCategory(id):
         category = Category.query.filter_by(id=id).one()
         if current_user.id == category.user_id or current_user.admin:
             if request.method == 'POST':
-                category.name = request.form['name']
-                category.user_id = current_user.id
-                db.session.add(category)
-                db.session.commit()
-                flash({
-                    "message": "Category successfully updated!",
-                    "role": "success"
-                     })
+                if request.form['name']:
+                    category.name = request.form['name']
+                    category.user_id = current_user.id
+                    db.session.add(category)
+                    db.session.commit()
+                    flash({
+                        "message": "Category successfully updated!",
+                        "role": "success"
+                         })
+                else:
+                    flash({
+                        "message": "Category name cannot be empty!",
+                        "role": "failure"
+                         })
                 return redirect(url_for('main.showHome'))
             elif request.method == 'GET':
                 return jsonify(category.serialize_category)
