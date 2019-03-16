@@ -1,4 +1,5 @@
 # catalog/category/views.py
+
 from flask import (render_template, Blueprint, request, flash,
                    redirect, url_for, jsonify)
 from catalog.models import Category, Item
@@ -12,6 +13,14 @@ category_blueprint = Blueprint('category', __name__,)
 
 @category_blueprint.route("/catalog/api/v1/categories/JSON")
 def getAllCategories():
+    """Get all the categories API endpoint
+
+    This endpoints allows to get all the categories present in the database.
+    No parameters are required.
+    The returned json will contain a list accessible from the "Categories" key.
+    Each object inside the list, will contain the id of the category,
+    the category name and the id of the user that created the category.
+    """
     try:
         categories = Category.query.all()
         return jsonify(Categories=[c.serialize_category for c in categories])
@@ -23,6 +32,21 @@ def getAllCategories():
 @category_blueprint.route("/catalog/<categoryName>")
 @category_blueprint.route("/catalog/<categoryName>/items")
 def getCategoryItems(categoryName):
+    """Get the items in a specifc category
+
+    With this API endpoint you can get a list of all the items present in
+    the specific category passed as parameter.
+    The category name must match exactly the one present in the database.
+    The list of returned JSON objects can be accessed through the key "Items".
+    Each object in the list will contain the:
+        category_id,
+        category_name,
+        description,
+        id (of the item),
+        name,
+        picture (uri),
+        user_id (creator of the item).
+    """
     try:
         items = Item.query.filter_by(category_name=categoryName).all()
         return render_template("partials/items-list.html", items=items,
