@@ -57,21 +57,30 @@ def addCategoryItem(categoryName):
                 return render_template('new_item.html', category=category,
                                        user=current_user)
             elif request.method == 'POST':
-                newItem = Item(
-                    name=request.form['name'],
-                    picture=request.form['picture'],
-                    description=request.form['description'],
-                    category_id=category.id,
-                    category_name=category.name,
-                    user_id=current_user.id
-                    )
-                db.session.add(newItem)
-                db.session.commit()
-                flash({
-                    "message": "New item successfully created.",
-                    "role": "success"
-                    })
-                return redirect(url_for('main.showHome'))
+                if (request.form['name'] and request.form['picture'] and
+                        request.form['description']):
+                    newItem = Item(
+                        name=request.form['name'],
+                        picture=request.form['picture'],
+                        description=request.form['description'],
+                        category_id=category.id,
+                        category_name=category.name,
+                        user_id=current_user.id
+                        )
+                    db.session.add(newItem)
+                    db.session.commit()
+                    flash({
+                        "message": "New item successfully created.",
+                        "role": "success"
+                        })
+                    return redirect(url_for('main.showHome'))
+                else:
+                    flash({
+                        "message": "Please fill in all the fields!",
+                        "role": "failure"
+                        })
+                    return render_template('new_item.html', category=category,
+                                           user=current_user)
         else:
             return handleUnauthorized()
     except exc.SQLAlchemyError as e:
@@ -112,13 +121,27 @@ def editCategoryItem(categoryName, itemName):
                 return render_template('edit_item.html', item=item,
                                        user=current_user)
             elif request.method == 'POST':
-                item.name = request.form['name']
-                item.picture = request.form['picture']
-                item.description = request.form['description']
-                item.user_id = current_user.id
-                db.session.add(item)
-                db.session.commit()
-                return redirect(url_for('main.showHome'))
+                if (request.form['name'] and request.form['picture'] and
+                        request.form['description']):
+                    item.name = request.form['name']
+                    item.picture = request.form['picture']
+                    item.description = request.form['description']
+                    item.user_id = current_user.id
+                    db.session.add(item)
+                    db.session.commit()
+                    flash({
+                        "message": "New item successfully added.",
+                        "role": "success"
+                         })
+                    return redirect(url_for('main.showHome'))
+                else:
+                    flash({
+                        "message": "Please fill up all the fields.",
+                        "role": "failure"
+                         })
+                    return render_template('edit_item.html', item=item,
+                                           user=current_user)
+
         else:
             return handleUnauthorized()
     except exc.SQLAlchemyError as e:
