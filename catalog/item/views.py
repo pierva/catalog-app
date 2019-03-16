@@ -12,6 +12,26 @@ item_blueprint = Blueprint('item', __name__,)
 
 @item_blueprint.route("/catalog/api/v1/all/JSON")
 def getItemsJSON():
+    """Get all the items info API endpoint
+
+        This API endpoint provides a GET method to query all the data in the
+        database.
+        This route doesn't require any parameter nor authentication.
+        The JSON object returned by the API route will contain a list of
+        items accessible with the key "Items."
+        Each item object inside the list will have the following keys:
+            category_id,
+            category_name,
+            description,
+            id (of the item),
+            name,
+            picture,
+            user_id (creator of the item)
+
+        In case of error an object is returned with the following keys:
+            status (error code),
+            error (error message)
+    """
     try:
         items = Item.query.all()
         return jsonify(Items=[i.serialize_item for i in items])
@@ -23,6 +43,29 @@ def getItemsJSON():
 @item_blueprint.route("/catalog/api/v1/item/<int:itemId>/JSON")
 @item_blueprint.route("/catalog/api/v1/item/<itemName>/JSON")
 def getSingleItemJSON(itemId=None, itemName=""):
+    """Get specific item details
+
+        This API endpoint provides a GET method to query a specifc item in
+        the database.
+        The enpoint requires that a valid item id is passed or alternativetly
+        the query can be done with the item name.
+        If the item name is provided in the url, the query will be performed
+        with the like operator, therefore the name (parameter) should not
+        necessary be exactly the same as the one stored in the database.
+        This route doesn't require any authentication.
+        The endpoint returns a single object with the following keys:
+            category_id,
+            category_name,
+            description,
+            id (of the item),
+            name,
+            picture,
+            user_id (creator of the item)
+
+        In case of error an object is returned with the following keys:
+            status (error code),
+            error (error message)
+    """
     try:
         if itemId:
             item = Item.query.filter_by(id=itemId).first()
@@ -39,6 +82,28 @@ def getSingleItemJSON(itemId=None, itemName=""):
 
 @item_blueprint.route("/catalog/api/v1/items/<categoryName>/JSON")
 def getCategoryItemsJSON(categoryName):
+    """Get all the items in a specific category
+
+        This API endpoint provides a GET method to query a all the items in
+        a specifc category.
+        The enpoint requires that a valid category name is provided as
+        parameter.
+        The category name provided should exactly match the one stored in the
+        database.
+        This route doesn't require any authentication.
+        The endpoint returns a single object with the following keys:
+            category_id,
+            category_name,
+            description,
+            id (of the item),
+            name,
+            picture,
+            user_id (creator of the item)
+
+        In case of error an object is returned with the following keys:
+            status (error code),
+            error (error message)
+    """
     try:
         items = Item.query.filter_by(category_name=categoryName).all()
         return jsonify(Items=[i.serialize_item for i in items])
