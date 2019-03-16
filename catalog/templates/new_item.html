@@ -10,19 +10,21 @@
     <div class="form-group">
       <label for="name">Item Name</label>
       <input type="text" class="form-control" name="name"
-        placeholder="Item Name">
+        placeholder="Item Name" required>
     </div>
     <div class="form-group">
       <label for="exampleInputEmail1">Picture Link</label>
-      <input type="text" class="form-control" name="picture"
-        aria-describedby="pictureHelp" placeholder="Picture link">
+      <input type="url" class="form-control" name="picture"
+        aria-describedby="pictureHelp" placeholder="Picture link" required>
       <small id="pictureHelp" class="form-text text-muted">
           Insert a link to a cool picture of this item.
+          https://link-to-the-image
       </small>
     </div>
     <div class="form-group">
       <label for="description">Description</label>
-      <textarea class="form-control" name="description" rows="5"></textarea>
+      <textarea class="form-control" name="description" rows="5"
+        required></textarea>
     </div>
 
     <div class="text-right">
