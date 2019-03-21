@@ -11,7 +11,8 @@ class BaseConfig(object):
     WTF_CSRF_ENABLED = True
     DEBUG_TB_ENABLED = False
     DEBUG_TB_INTERCEPT_REDIRECTS = False
-    EMAIL_VALIDATOR = ['carnival.com']
+    SQLALCHEMY_RECORD_QUERIES = False
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 
 class DevelopmentConfig(BaseConfig):
@@ -35,7 +36,5 @@ class ProductionConfig(BaseConfig):
     """Production configuration."""
     SECRET_KEY = 'my_precious'
     DEBUG = False
-    SQLALCHEMY_DATABASE_URI = 'postgresql://localhost/example'
+    SQLALCHEMY_DATABASE_URI = 'postgresql://localhost/pierva'
     DEBUG_TB_ENABLED = False
-    STRIPE_SECRET_KEY = 'foo'
-    STRIPE_PUBLISHABLE_KEY = 'bar'
