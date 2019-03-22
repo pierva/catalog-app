@@ -73,16 +73,21 @@ The content of the file should look similar to this:
 $ export APP_SETTINGS="catalog.config.DevelopmentConfig"
 ```
 
-or
-
+### For production
 ```sh
 $ export APP_SETTINGS="catalog.config.ProductionConfig"
 ```
+#### Create production.cfg file
 
-### Update Settings in Production
+Inside the `instance` folder create a file called `production.cfg`. Inside the file add the following:
 
-1. `SECRET_KEY`
-1. `SQLALCHEMY_DATABASE_URI`
+[keys]
+SECRET_KEY='your_super_secret_key'
+SECURITY_PASSWORD_SALT='your_password_salt'
+
+#### Update DB Settings in config.py
+
+`SQLALCHEMY_DATABASE_URI: 'postgresql://localhost/<dbName>'`
 
 ### Create DB
 
