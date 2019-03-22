@@ -15,7 +15,7 @@ Install the dependencies (first line for virtual env, second line for virtual ma
 pip3 install -r requirements.txt
 ```
 ### Create app instance folder
-From the downloaded folder (catalog) navigate inside the project folder (named same as the parent folder `catalog`)
+From the downloaded folder (catalog-app) navigate inside the project folder (named `catalog`)
 
 ```sh
 $ cd catalog
@@ -24,7 +24,7 @@ $ cd catalog
 You should be now in this location:
 
 ```sh
-vagrant@vagrant:/vagrant/catalog/catalog$
+vagrant@vagrant:/vagrant/catalog-app/catalog$
 ```
 
 Create an instance folder (where the google secret file will be stored):
