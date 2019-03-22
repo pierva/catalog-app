@@ -81,9 +81,11 @@ $ export APP_SETTINGS="catalog.config.ProductionConfig"
 
 Inside the `instance` folder create a file called `production.cfg`. Inside the file add the following:
 
+```
 [keys]
 SECRET_KEY='your_super_secret_key'
 SECURITY_PASSWORD_SALT='your_password_salt'
+```
 
 #### Update DB Settings in config.py
 
