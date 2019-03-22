@@ -45,7 +45,7 @@ class ProductionConfig(BaseConfig):
     """Production configuration."""
     SECRET_KEY = 'my_precious'
     DEBUG = False
-    SQLALCHEMY_DATABASE_URI = 'postgresql://localhost/pierva'
+    SQLALCHEMY_DATABASE_URI = 'postgresql://localhost/catalog'
     DEBUG_TB_ENABLED = False
 
     # production config takes precedence over env variables
