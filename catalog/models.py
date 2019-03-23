@@ -37,34 +37,16 @@ class User(db.Model):
         return '<email {}'.format(self.email)
 
 
-class Category(db.Model):
-    __tablename__ = 'category'
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(50), nullable=False)
-
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    db.relationship(User)
-
-    @property
-    def serialize_category(self):
-        return {
-            'id': self.id,
-            'name': self.name,
-            'user_id': self.user_id
-        }
-
-
 class Item(db.Model):
     __tablename__ = 'item'
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, unique=True)
     name = db.Column(db.String(50), nullable=False)
     picture = db.Column(db.String, nullable=True)
     description = db.Column(db.String)
-
-    category_id = db.Column(db.Integer, db.ForeignKey('category.id'))
-    category_name = db.Column(db.Integer, db.ForeignKey('category.name'))
+    category_id = db.Column(db.Integer)
+    category_name = db.Column(db.String)
     user_id = db.Column(db.Integer, db.ForeignKey('category.user_id'))
-    db.relationship(Category)
+
 
     @property
     def serialize_item(self):
@@ -76,4 +58,22 @@ class Item(db.Model):
             'description': self.description,
             'category_id': self.category_id,
             'category_name': self.category_name,
+        }
+
+
+class Category(db.Model):
+    __tablename__ = 'category'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50), nullable=False)
+
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    db.relationship(User)
+    db.relationship(Item, cascade="all, delete")
+
+    @property
+    def serialize_category(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'user_id': self.user_id
         }
