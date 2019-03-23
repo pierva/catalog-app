@@ -91,8 +91,7 @@ def newCategory():
         except exc.SQLAlchemyError as e:
             flash({
                 "message":
-                    "Something went wrong while processing your request.\n\n" +
-                    e.message,
+                    "Something went wrong while processing your request.",
                 "role": "failure"
                  })
             return redirect('/')
@@ -127,8 +126,7 @@ def editCategory(id):
     except exc.SQLAlchemyError as e:
         flash({
             "message":
-                "Something went wrong while processing your request.\n\n" +
-                e.message,
+                "Something went wrong while processing your request.",
             "role": "failure"
              })
         return redirect('/')
