@@ -79,7 +79,7 @@
                   <div data-item-name="{{item.name}}">
                     <button type="submit" name="button"  data-toggle='modal'
                       data-target='#previewModal'
-                      class="btn btn-sm btn-outline-primary">
+                      class="btn btn-sm btn-outline-primary preview-item">
                       <span class="fas fa-eye"></span>
                     </button>
                     {% if user.id == item.user_id or user.admin %}
@@ -90,7 +90,7 @@
                       </a>
                       <button type="submit" name="button"  data-toggle='modal'
                         data-target='#deleteModal'
-                        class="btn btn-sm btn-outline-danger">
+                        class="btn btn-sm btn-outline-danger delete-item">
                         <span class="fas fa-trash-alt"></span>
                       </button>
                     {% endif %}

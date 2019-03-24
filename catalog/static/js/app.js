@@ -28,7 +28,7 @@ $(function(){
 });
 
 $(function(){
-  $('.item-container button').on('click', function(){
+  $('.item-container .delete-item').on('click', function(){
     var name = $(this).parent().data('item-name');
     var categoryName = $(this).parent().siblings('.description').text().trim();
     $("#deleteModalLabel").text("Delete Item");
@@ -64,9 +64,11 @@ $(function(){
   });
 });
 
-$('.item-container li').on('click', function(){
-  var item = $(this).children('div').data("item-name");
-  var category = $(this).children('.description').text().trim();
+$('.item-container .preview-item').on('click', function(){
+  var item = $(this).parent('div').data("item-name");
+  var category = $(this).parents('.list-group-item')
+                    .children('.description').text().trim();
+  console.log(item, ":", category);
   var url = $SCRIPT_ROOT + '/catalog/' + category + "/" + item;
   $.getJSON(url, function(item){
     if(item.message){
