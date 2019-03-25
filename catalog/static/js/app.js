@@ -68,7 +68,6 @@ $('.item-container .preview-item').on('click', function(){
   var item = $(this).parent('div').data("item-name");
   var category = $(this).parents('.list-group-item')
                     .children('.description').text().trim();
-  console.log(item, ":", category);
   var url = $SCRIPT_ROOT + '/catalog/' + category + "/" + item;
   $.getJSON(url, function(item){
     if(item.message){
