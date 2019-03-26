@@ -6,17 +6,19 @@
   </span>
   <div data-item-name="{{item.name}}">
     <button type="submit" name="button"  data-toggle='modal'
-      data-target='#previewModal' class="btn btn-sm btn-outline-primary">
+      data-target='#previewModal'
+      class="btn btn-sm btn-outline-primary preview-item">
       <span class="fas fa-eye"></span>
     </button>
     {% if user.id == item.user_id or user.admin%}
       <a href="{{url_for('item.editCategoryItem',
-        categoryName = item.category_name, itemName = item.name)}}"
+        categoryName = item.category_name, itemName=item.name)}}"
         class="btn btn-sm btn-outline-warning">
         <span class="fas fa-edit"></span>
       </a>
       <button type="submit" name="button"  data-toggle='modal'
-        data-target='#deleteModal' class="btn btn-sm btn-outline-danger">
+        data-target='#deleteModal'
+        class="btn btn-sm btn-outline-danger delete-item">
         <span class="fas fa-trash-alt"></span>
       </button>
     {% endif %}

@@ -64,7 +64,7 @@ $(function(){
   });
 });
 
-$('.item-container .preview-item').on('click', function(){
+$('.item-container').on('click', '.preview-item', function(){
   var item = $(this).parent('div').data("item-name");
   var category = $(this).parents('.list-group-item')
                     .children('.description').text().trim();
