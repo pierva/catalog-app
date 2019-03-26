@@ -32,12 +32,24 @@ def drop_db():
 
 
 @manager.command
+def create_admin():
+    """Creates the admin user."""
+    db.session.add(User(
+        email="admin@email.com",
+        password="Admin1234",
+        admin=True
+        )
+    )
+    db.session.commit()
+
+
+@manager.command
 def create_user():
     """Creates the admin user."""
     db.session.add(User(
-        email="example@email.com",
-        password="Admin1234",
-        admin=True
+        email="user@email.com",
+        password="User1234",
+        admin=False
         )
     )
     db.session.commit()
