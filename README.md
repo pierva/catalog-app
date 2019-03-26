@@ -54,8 +54,6 @@ The content of the file should look similar to this:
       "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
       "client_secret": "YOUR-SECRET",
       "redirect_uris": [
-          "http://localhost:5000/gCallback",
-          "https://localhost:5000/gCallback",
           "http://localhost:5000/catalog"
           ],
       "javascript_origins": [
@@ -65,7 +63,22 @@ The content of the file should look similar to this:
     }
 }
 ```
+It is also necessary to update the `client_id` inside the `login.html` file located in the 'user' folder inside `templates`.
 
+At the top of the file you'll find the following code:
+
+```javascript
+<script>
+  function start() {
+    gapi.load('auth2', function() {
+      auth2 = gapi.auth2.init({
+            client_id: 'YOUR-CLIENT-ID.apps.googleusercontent.com',
+      });
+    });
+  }
+</script>
+```
+Change `YOUR-CLIENT-ID` with your client id taken from the [google console.](https://console.developers.google.com/apis/credentials)
 
 ### Set Environment Variables
 
@@ -105,6 +118,12 @@ $ python3 manage.py db migrate
 
 ### Create Admin user (optional)
 You can create an admin user by simply running this command:
+```sh
+$ python3 manage.py create_admin
+```
+
+### Create User (optional)
+You can create an normal user (non admin) by running this command:
 ```sh
 $ python3 manage.py create_user
 ```
