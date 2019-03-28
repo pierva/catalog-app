@@ -87,8 +87,17 @@ $ export APP_SETTINGS="catalog.config.DevelopmentConfig"
 ```
 
 ### For production
-```sh
-$ export APP_SETTINGS="catalog.config.ProductionConfig"
+It is recommended not to use environment variables in production. If the server restarts for any reasons, the environment variable will be lost.
+
+Hence, we need to make a small change in the `__init__.py` file inside the `catalog` folder.
+
+```python
+# Change the below line
+# app.config.from_object(os.environ['APP_SETTINGS'])
+
+# with this one
+app.config.from_object("catalog.config.ProductionConfig")
+
 ```
 #### Create production.cfg file
 
