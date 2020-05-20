@@ -13,7 +13,7 @@ Flask_Migrate==2.4.0
 Flask_Script==2.0.6
 Flask-SQLAlchemy==2.3.2
 Flask-WTF==0.14.2
-httplib2==0.12.1
+httplib2==0.18.0
 idna==2.8
 itsdangerous==1.1.0
 Jinja2==2.10
